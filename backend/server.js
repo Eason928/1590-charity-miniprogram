@@ -1,3 +1,5 @@
+/* 1590 Charity Club Mini Program · (c) 2026 Eason Yuan (@Eason928) · https://github.com/Eason928/1590-charity-miniprogram */
+
 require('dotenv').config();
 const Koa = require('koa');
 const Router = require('@koa/router');

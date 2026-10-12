@@ -1,3 +1,4 @@
+/* 1590 Charity Club Mini Program · (c) 2026 Eason Yuan (@Eason928) · https://github.com/Eason928/1590-charity-miniprogram */
 /* ===== 管理后台样式 (重构 - 使用设计系统) ===== */
 page { background: var(--bg-page); }
 .container { padding: 0; min-height: 100vh; }

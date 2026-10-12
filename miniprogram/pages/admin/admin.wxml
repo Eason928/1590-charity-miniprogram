@@ -1,3 +1,4 @@
+<!-- 1590 Charity Club Mini Program · (c) 2026 Eason Yuan (@Eason928) · https://github.com/Eason928/1590-charity-miniprogram -->
 <view class="container">
   <!-- 登录入口 -->
   <view class="login-card" wx:if="{{!isAdmin}}">
