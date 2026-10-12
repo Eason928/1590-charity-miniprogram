@@ -1,0 +1,85 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 任务内容 -->
+  <view class="content" wx:else>
+    <!-- 主信息卡片 -->
+    <view class="detail-card">
+      <text class="detail-title">{{task.title}}</text>
+
+      <view class="detail-status {{task.slots_filled >= task.slots_needed ? 'full' : ''}}">
+        <text class="status-label">{{task.slots_filled >= task.slots_needed ? '招募已满' : '招募中'}}</text>
+        <text class="status-quota">已报名 {{task.slots_filled}} / 需要 {{task.slots_needed}} 人</text>
+      </view>
+
+      <view class="info-list">
+        <view class="info-item">
+          <view class="icon icon-clock icon-sm" style="color:var(--color-primary)"></view>
+          <view class="info-content">
+            <text class="info-label">活动时间</text>
+            <text class="info-value">{{task.date_time || '待确定'}}</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <view class="icon icon-location icon-sm" style="color:var(--color-primary)"></view>
+          <view class="info-content">
+            <text class="info-label">活动地点</text>
+            <text class="info-value">{{task.location || '待确定'}}</text>
+          </view>
+        </view>
+        <view class="info-item" wx:if="{{task.deadline}}">
+          <text class="info-icon">⏰</text>
+          <view class="info-content">
+            <text class="info-label">报名截止</text>
+            <text class="info-value">{{task.deadline}}</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="detail-share-btn" open-type="share" data-id="{{task.id}}" data-title="{{task.title}}">📤 分享给微信好友</button>
+    </view>
+
+    <!-- 活动描述 -->
+    <view class="section-card">
+      <view class="section-title"><view class="icon icon-edit icon-sm" style="color:var(--text-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>活动详情</view>
+      <text class="section-text">{{task.description || '暂无详细描述'}}</text>
+    </view>
+
+    <!-- 报名按钮区域 -->
+    <view class="apply-section" wx:if="{{canApply && !loading}}">
+      <view class="apply-card" wx:if="{{!applied}}">
+        <view class="apply-title"><view class="icon icon-heart icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>报名参加</view>
+        <text class="apply-sub">请填写你的联系信息，方便活动负责人联系你</text>
+
+        <input class="apply-input" placeholder="联系方式（手机号/微信/QQ）" value="{{contact}}" bindinput="onContactInput" />
+        <input class="apply-input" placeholder="备注（可选，如空闲时间段）" value="{{remark}}" bindinput="onRemarkInput" />
+
+        <button class="apply-btn" bindtap="doApply" disabled="{{submitting}}">
+          {{submitting ? '提交中...' : '确认报名'}}
+        </button>
+      </view>
+
+      <!-- 已报名状态 -->
+      <view class="applied-card" wx:else>
+        <view class="icon icon-check icon-sm" style="color:var(--color-success)"></view>
+        <text class="applied-title">已报名</text>
+        <text class="applied-sub">你的报名已提交，请耐心等待负责人确认</text>
+        <view class="applied-status-tag pending">待确认</view>
+      </view>
+    </view>
+
+    <!-- 不可报名提示（开发者/荣大大） -->
+    <view class="no-apply" wx:elif="{{!canApply && !loading && user}}">
+      <text class="no-apply-text">当前角色不支持报名志愿活动</text>
+    </view>
+
+    <!-- 未登录提示 -->
+    <view class="no-apply" wx:elif="{{!user && !loading}}">
+      <view class="no-apply-text"><view class="icon icon-user icon-sm" style="color:var(--text-hint);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>请先登录后报名</view>
+      <button class="login-btn" bindtap="goLogin">去登录</button>
+    </view>
+  </view>
+</view>

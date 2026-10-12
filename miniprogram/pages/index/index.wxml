@@ -1,0 +1,47 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <text class="title">爱迪猫猫图鉴</text>
+    <text class="subtitle">记录我们校园里的每一只小可爱</text>
+  </view>
+
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <view class="icon icon-search icon-sm" style="color:var(--text-hint)"></view>
+    <input class="search-input" placeholder="搜索猫咪名字..." bindinput="onSearch" />
+  </view>
+
+  <!-- 分类标签 -->
+  <view class="status-tabs">
+    <view class="status-tab {{currentStatus === '全部' ? 'active' : ''}}" bindtap="filterByStatus" data-status="全部">全部</view>
+    <view class="status-tab {{currentStatus === '在校' ? 'active' : ''}}" bindtap="filterByStatus" data-status="在校">🏫 在校</view>
+    <view class="status-tab {{currentStatus === '已领养' ? 'active' : ''}}" bindtap="filterByStatus" data-status="已领养">🏠 已领养</view>
+    <view class="status-tab {{currentStatus === '喵星' ? 'active' : ''}}" bindtap="filterByStatus" data-status="喵星">⭐ 喵星</view>
+  </view>
+
+  <!-- 猫咪列表（长条形卡片） -->
+  <view class="cat-list">
+    <view 
+      class="cat-card" 
+      wx:for="{{cats}}" 
+      wx:key="id"
+      bindtap="goDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="cat-avatar">
+        <image src="{{item.avatar}}" mode="aspectFill" />
+      </view>
+      <view class="cat-info">
+        <text class="cat-name">{{item.name}}</text>
+        <text class="cat-brief">{{item.color}} · {{item.gender}}</text>
+      </view>
+      <text class="cat-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 空状态提示 -->
+  <view class="empty" wx:if="{{cats.length === 0}}">
+    <text class="empty-text">😿 没有找到这只猫咪</text>
+    <text class="empty-sub">试试搜索其他名字</text>
+  </view>
+</view>

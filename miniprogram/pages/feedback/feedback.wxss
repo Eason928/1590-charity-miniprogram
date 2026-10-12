@@ -1,0 +1,253 @@
+.container {
+  padding: 20rpx 30rpx;
+  min-height: 100vh;
+  background: #FFFBF0;
+}
+
+/* 提交表单 */
+.form-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.form-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.field-label {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.picker-text {
+  font-size: 30rpx;
+  color: #333;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 10rpx;
+  background: #fafafa;
+}
+
+.input {
+  font-size: 30rpx;
+  padding: 16rpx 20rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 10rpx;
+  background: #fafafa;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.textarea {
+  height: 200rpx;
+  resize: none;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: #1A73E8;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-btn::after {
+  border: none;
+}
+
+/* 分隔线 */
+.divider {
+  height: 1rpx;
+  background: #e8e8e8;
+  margin: 20rpx 0;
+}
+
+/* 区块标题 */
+.section-header {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+  padding: 0 4rpx;
+}
+
+/* 反馈列表 */
+.fb-list {
+  margin-bottom: 30rpx;
+}
+
+.fb-card {
+  background: #fff;
+  border-radius: 14rpx;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.fb-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+  gap: 12rpx;
+}
+
+.fb-user {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.fb-type {
+  font-size: 22rpx;
+  padding: 2rpx 14rpx;
+  border-radius: 6rpx;
+  font-weight: 500;
+}
+
+.type-bug {
+  background: #ffe6e6;
+  color: #d32f2f;
+}
+
+.type-suggestion {
+  background: #e6f3ff;
+  color: #1565c0;
+}
+
+.type-other {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.fb-status {
+  font-size: 22rpx;
+  padding: 2rpx 14rpx;
+  border-radius: 6rpx;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status-resolved {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.fb-content {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
+  word-break: break-all;
+}
+
+.fb-reply {
+  background: #f0f7ff;
+  border-radius: 8rpx;
+  padding: 12rpx 16rpx;
+  margin-bottom: 10rpx;
+  font-size: 26rpx;
+  color: #1a73e8;
+  display: flex;
+  align-items: flex-start;
+  gap: 6rpx;
+}
+
+.reply-text {
+  flex: 1;
+  color: #444;
+  line-height: 1.5;
+}
+
+.fb-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8rpx;
+}
+
+.fb-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.fb-resolve-btn {
+  font-size: 26rpx;
+  color: #1A73E8;
+  padding: 6rpx 16rpx;
+  border: 1rpx solid #1A73E8;
+  border-radius: 8rpx;
+}
+
+.fb-resolved-text {
+  font-size: 26rpx;
+  color: #2e7d32;
+}
+
+/* 开发者面板 */
+.dev-panel {
+  padding: 0;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.filter-tab {
+  padding: 8rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #f0f0f0;
+}
+
+.filter-tab.active {
+  background: #1A73E8;
+  color: #fff;
+}
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}

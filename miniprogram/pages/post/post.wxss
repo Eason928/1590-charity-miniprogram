@@ -1,0 +1,226 @@
+.container {
+  padding: 30rpx 24rpx;
+}
+
+.form-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-label {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 16rpx;
+}
+
+.picker-input {
+  background: #F5F5F5;
+  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 图片选择 */
+.image-picker-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.image-picker {
+  width: 160rpx;
+  height: 160rpx;
+  flex-shrink: 0;
+}
+
+.image-placeholder {
+  width: 160rpx;
+  height: 160rpx;
+  background: #F5F5F5;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx dashed #ddd;
+}
+
+.plus {
+  font-size: 48rpx;
+  color: #ccc;
+}
+
+.hint {
+  font-size: 20rpx;
+  color: #bbb;
+  margin-top: 4rpx;
+}
+
+.preview-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+}
+
+/* 文字输入 */
+.text-input {
+  width: 100%;
+  background: #F5F5F5;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+.title-input {
+  min-height: 72rpx;
+}
+
+.content-input {
+  min-height: 200rpx;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 22rpx;
+  color: #bbb;
+  margin-top: 8rpx;
+}
+
+/* 提交 */
+.submit-btn {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: #E8885A;
+  color: #fff;
+  font-size: 30rpx;
+  border-radius: 50rpx;
+  text-align: center;
+  border: none;
+  margin-top: 20rpx;
+}
+
+.submit-btn::after {
+  border: none;
+}
+
+.submit-btn[disabled] {
+  background: #ddd;
+  color: #999;
+}
+
+.notice {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #bbb;
+  margin-top: 20rpx;
+}
+
+.notice-manager {
+  color: #52C41A;
+}
+
+/* ===== 管理员选项 ===== */
+.manager-options {
+  margin-top: 32rpx;
+  border-top: 1rpx solid #F0F0F0;
+  padding-top: 24rpx;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+}
+
+.option-item + .option-item {
+  border-top: 1rpx solid #F8F8F8;
+}
+
+.option-info {
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+.option-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.option-desc {
+  font-size: 22rpx;
+  color: #bbb;
+  display: block;
+  margin-top: 4rpx;
+}
+
+/* 分类选择器 */
+.opt-picker {
+  background: #F5F5F5;
+  padding: 12rpx 24rpx;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #333;
+  min-width: 160rpx;
+  text-align: center;
+}
+
+/* 置顶时间选择器 */
+.pin-time-row {
+  display: flex;
+  gap: 10rpx;
+}
+.pin-picker {
+  background: #F5F5F5;
+  padding: 12rpx 20rpx;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  color: #333;
+  min-width: 140rpx;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 活动记录收支字段 */
+.finance-row {
+  flex: 1;
+  display: flex;
+  gap: 20rpx;
+}
+.finance-field {
+  flex: 1;
+}
+.finance-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 8rpx;
+}
+.finance-input {
+  background: #F5F5F5;
+  padding: 16rpx 20rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  width: 100%;
+  box-sizing: border-box;
+}

@@ -1,0 +1,22 @@
+<view class="splash-container">
+  <view class="splash-stage">
+    <!-- Logo -->
+    <view class="logo-box {{logoAnim}}">
+      <image wx:if="{{logoUrl}}" src="{{logoUrl}}" mode="aspectFill" class="logo-img" />
+      <view wx:else class="logo-placeholder">
+        <text class="logo-emoji">🐱</text>
+      </view>
+    </view>
+
+    <!-- 文字区域 -->
+    <view class="text-box {{textVisible ? 'show' : ''}}">
+      <view class="name-row">
+        <text class="splash-name">{{typedName}}</text>
+        <text class="cursor" wx:if="{{showCursor}}">|</text>
+      </view>
+      <text class="splash-subtitle {{showSubtitle ? 'show' : ''}}">记录校园里的每一只流浪小可爱</text>
+    </view>
+  </view>
+
+  <text class="version-tag {{showVersion ? 'show' : ''}}">v1.0.0</text>
+</view>

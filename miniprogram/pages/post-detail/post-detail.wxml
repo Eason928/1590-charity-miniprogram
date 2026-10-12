@@ -1,0 +1,83 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="detail-wrap">
+    <!-- 作者信息 -->
+    <view class="author-row">
+      <view class="author-avatar">{{post.nickname ? post.nickname[0] : '?'}}</view>
+      <view class="author-info">
+        <text class="author-name">{{post.nickname}}</text>
+        <view wx:if="{{post.role}}" class="post-role-row">
+          <text class="post-role-badge role-{{post.role}}" wx:if="{{post.role === 'rongdada' || post.role === 'developer'}}">{{post.role === 'developer' ? '开发者' : '荣大大'}}</text>
+          <text class="post-title-badge" wx:if="{{post.title}}">{{post.title}}</text>
+        </view>
+        <view class="author-meta-row">
+          <text class="post-category-tag cat-cat" wx:if="{{post.category === '猫猫帖'}}">猫猫帖</text>
+          <text class="post-category-tag cat-volunteer" wx:if="{{post.category === '活动记录帖'}}">活动记录帖</text>
+          <text class="post-category-tag cat-announce" wx:if="{{post.category === '公告帖子'}}">公告</text>
+          <text class="post-category-tag cat-dev" wx:if="{{post.category === '开发者公告'}}">开发者公告</text>
+          <text class="post-category-tag cat-daily" wx:if="{{post.category === '日常分享帖'}}">分享</text>
+          <text class="post-date">{{post.created_at ? post.created_at.slice(0,10) : ''}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 活动记录帖：收支公示 -->
+    <view class="finance-display" wx:if="{{post.category === '活动记录帖'}}">
+      <view class="finance-item income" wx:if="{{post.income_amount > 0}}">
+        <text class="finance-amount">+¥{{post.income_amount}}</text>
+        <text class="finance-label-sm">收入</text>
+      </view>
+      <view class="finance-item expense" wx:if="{{post.expense_amount > 0}}">
+        <text class="finance-amount">-¥{{post.expense_amount}}</text>
+        <text class="finance-label-sm">支出</text>
+      </view>
+    </view>
+
+    <!-- 标题 -->
+    <text class="detail-title" wx:if="{{post.title}}">{{post.title}}</text>
+
+    <!-- 内容 -->
+    <text class="detail-text" wx:if="{{post.text}}">{{post.text}}</text>
+
+    <!-- 图片排版 -->
+    <view class="image-section" wx:if="{{post.images && post.images.length > 0}}">
+      <view class="img-1-wrap" wx:if="{{post.images.length === 1}}">
+        <image src="{{post.images[0]}}" mode="aspectFit" class="img-1" bindtap="previewImage" data-index="0" />
+      </view>
+      <view class="img-2-wrap" wx:elif="{{post.images.length === 2}}">
+        <image src="{{post.images[0]}}" mode="aspectFill" class="img-2" bindtap="previewImage" data-index="0" />
+        <image src="{{post.images[1]}}" mode="aspectFill" class="img-2" bindtap="previewImage" data-index="1" />
+      </view>
+      <view class="img-3-wrap" wx:elif="{{post.images.length === 3}}">
+        <image src="{{post.images[0]}}" mode="aspectFill" class="img-3-big" bindtap="previewImage" data-index="0" />
+        <view class="img-3-col">
+          <image src="{{post.images[1]}}" mode="aspectFill" class="img-3-small" bindtap="previewImage" data-index="1" />
+          <image src="{{post.images[2]}}" mode="aspectFill" class="img-3-small" bindtap="previewImage" data-index="2" />
+        </view>
+      </view>
+      <view class="img-grid" wx:elif="{{post.images.length === 4}}">
+        <image wx:for="{{post.images}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="img-grid-cell" bindtap="previewImage" data-index="{{index}}" />
+      </view>
+      <view class="img-grid-3" wx:else>
+        <image wx:for="{{post.images.slice(0,9)}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="img-grid-cell-3" bindtap="previewImage" data-index="{{index}}" />
+      </view>
+    </view>
+
+    <!-- 底部 -->
+    <view class="detail-footer">
+      <view class="footer-label" wx:if="{{post.cat_name}}"><view class="icon icon-cat icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>关联猫咪：{{post.cat_name}}</view>
+      <!-- 志愿任务：立即报名按钮 -->
+      <view class="volunteer-apply-row" wx:if="{{post.volunteer_task_id}}">
+        <button class="volunteer-apply-btn" bindtap="goVolunteerApply"><view class="icon icon-heart icon-sm" style="color:#fff;margin-right:6rpx;display:inline-block;vertical-align:middle"></view>立即报名</button>
+      </view>
+      <!-- 删除按钮：仅作者可见 -->
+      <view class="delete-row" wx:if="{{isAuthor}}">
+        <button class="delete-btn" bindtap="deletePost"><view class="icon icon-trash icon-sm" style="color:var(--color-danger);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>删除帖子</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,419 @@
+<view class="container">
+  <!-- 登录入口 -->
+  <view class="login-card" wx:if="{{!isAdmin}}">
+    <text class="login-title">管理员请先在「我的」页面登录</text>
+    <button class="login-btn" bindtap="goProfile">前往登录</button>
+  </view>
+
+  <!-- 管理后台 -->
+  <view wx:else class="admin-layout">
+    <!-- 顶部导航 -->
+    <view class="topbar">
+      <view class="topbar-left">
+        <text class="topbar-title">管理后台</text>
+        <text class="topbar-badge {{userRole === 'developer' ? 'dev' : (userRole === 'rongdada' ? 'rongdada' : 'admin')}}">{{userRole === 'developer' ? '开发者' : (userRole === 'rongdada' ? '荣大大' : '管理员')}}</text>
+      </view>
+      <view class="topbar-right">
+        <text class="topbar-version">v1.0.0</text>
+        <text class="topbar-logout" bindtap="logout">退出</text>
+      </view>
+    </view>
+
+    <!-- 导航菜单（合并后 7 个） -->
+    <view class="nav-scroll">
+      <view class="nav-menu">
+        <view class="nav-item {{currentTab === 'overview' ? 'active' : ''}}" bindtap="switchTab" data-tab="overview" wx:if="{{isDeveloper}}">
+          <view class="icon icon-grid nav-icon"></view>
+          <text class="nav-label">概览</text>
+        </view>
+        <view class="nav-item {{currentTab === 'posts' ? 'active' : ''}}" bindtap="switchTab" data-tab="posts">
+          <view class="icon icon-message nav-icon"></view>
+          <text class="nav-label">帖子管理</text>
+        </view>
+        <view class="nav-item {{currentTab === 'catmgmt' ? 'active' : ''}}" bindtap="switchTab" data-tab="catmgmt">
+          <view class="icon icon-cat nav-icon"></view>
+          <text class="nav-label">猫咪管理</text>
+        </view>
+        <view class="nav-item {{currentTab === 'users' ? 'active' : ''}}" bindtap="switchTab" data-tab="users" wx:if="{{userRole !== 'admin'}}">
+          <view class="icon icon-users nav-icon"></view>
+          <text class="nav-label">用户管理</text>
+        </view>
+        <view class="nav-item {{currentTab === 'volunteerMgmt' ? 'active' : ''}}" bindtap="switchTab" data-tab="volunteerMgmt" wx:if="{{userRole !== 'admin'}}">
+          <view class="icon icon-heart nav-icon"></view>
+          <text class="nav-label">志愿管理</text>
+        </view>
+        <view class="nav-item {{currentTab === 'products' ? 'active' : ''}}" bindtap="switchTab" data-tab="products" wx:if="{{userRole === 'developer' || userRole === 'rongdada'}}">
+          <view class="icon icon-bag nav-icon"></view>
+          <text class="nav-label">义卖管理</text>
+        </view>
+        <view class="nav-item {{currentTab === 'students' ? 'active' : ''}}" bindtap="switchTab" data-tab="students" wx:if="{{userRole === 'developer' || userRole === 'rongdada'}}">
+          <view class="icon icon-graduate nav-icon"></view>
+          <text class="nav-label">学生管理</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ===== 概览（仅开发者） ===== -->
+    <view wx:if="{{currentTab === 'overview'}}">
+      <view class="section-header"><view class="icon icon-grid icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>数据概览</view>
+      <view class="dash-row">
+        <view class="dash-card accent mini"><text class="dash-label">猫咪</text><text class="dash-value sm">{{dashboard.counts.cats}}</text></view>
+        <view class="dash-card accent mini"><text class="dash-label">用户</text><text class="dash-value sm">{{dashboard.counts.users}}</text></view>
+        <view class="dash-card highlight"><text class="dash-label">帖子总量</text><text class="dash-value big">{{dashboard.counts.posts}}</text></view>
+      </view>
+      <view class="dash-row">
+        <view class="dash-card warn"><text class="dash-label">待审核帖子</text><text class="dash-value">{{dashboard.counts.pendingPosts}}</text></view>
+        <view class="dash-card warn"><text class="dash-label">待审核用户</text><text class="dash-value">{{dashboard.counts.pendingUsers}}</text></view>
+        <view class="dash-card warn"><text class="dash-label">管理员申请</text><text class="dash-value">{{dashboard.counts.adminApplications}}</text></view>
+      </view>
+      <view class="dash-section-label">最近动态</view>
+      <view class="dash-timeline">
+        <view class="timeline-item" wx:for="{{dashboard.recent.posts}}" wx:key="text"><text class="tl-name">{{item.nickname}}</text><text class="role-tag-mini {{item.role}}">{{item.role === 'developer' ? '开发者' : (item.role === 'admin' ? '管理员' : (item.role === 'rongdada' ? '荣大大' : '用户'))}}</text><text class="tl-text">{{item.text.slice(0, 20)}}{{item.text.length > 20 ? '...' : ''}}</text><text class="timeline-time">{{item.created_at}}</text></view>
+      </view>
+    </view>
+
+    <!-- 帖子管理（合并待审核+全部帖子） -->
+    <view wx:if="{{currentTab === 'posts'}}">
+      <view class="section-header"><view class="icon icon-message icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>帖子管理</view>
+      <view class="sub-tabs">
+        <view class="sub-tab {{postsSubTab === 'all' ? 'active' : ''}}" bindtap="switchPostsSub" data-sub="all">全部</view>
+        <view class="sub-tab {{postsSubTab === 'pending' ? 'active' : ''}}" bindtap="switchPostsSub" data-sub="pending">待审核 <text class="sub-count" wx:if="{{pendingCount > 0}}">{{pendingCount}}</text></view>
+      </view>
+      <view class="card-list">
+        <view class="post-card" wx:for="{{postsSubTab === 'pending' ? pendingPosts : allPosts}}" wx:key="id">
+          <view class="card-head"><text class="card-user">{{item.nickname}}</text><text class="card-time">{{item.created_at.slice(0,10)}}</text></view>
+
+          <!-- 1-2 张图：左文右图 -->
+          <view class="post-row" wx:if="{{item.images && item.images.length > 0 && item.images.length < 3}}">
+            <view class="post-col-text">
+              <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+              <text class="post-text line-clamp-3">{{item.text}}</text>
+            </view>
+            <image class="post-thumb-single" src="{{item.images[0]}}" mode="aspectFill" />
+          </view>
+
+          <!-- 无图 -->
+          <view class="post-col-text" wx:elif="{{!item.images || item.images.length === 0}}">
+            <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+            <text class="post-text">{{item.text}}</text>
+          </view>
+
+          <!-- 3+ 张图 -->
+          <view wx:elif="{{item.images.length >= 3}}">
+            <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+            <text class="post-text line-clamp-2">{{item.text}}</text>
+            <view class="post-grid-3">
+              <image wx:for="{{item.images.slice(0,3)}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="post-thumb-grid" />
+            </view>
+          </view>
+
+          <!-- 操作按钮：待审核显示通过/拒绝，已审核显示关联猫/删除 -->
+          <view class="card-actions" wx:if="{{postsSubTab === 'pending'}}">
+            <view class="action-btn approve" bindtap="approvePost" data-id="{{item.id}}"><view class="icon icon-check icon-sm" style="color:var(--color-success)"></view>通过</view>
+            <view class="action-btn reject" bindtap="rejectPost" data-id="{{item.id}}"><view class="icon icon-x icon-sm" style="color:var(--color-danger)"></view>拒绝</view>
+          </view>
+          <view class="card-actions" wx:else>
+            <text class="status-badge {{item.status}}">{{item.status === 'approved' ? '已通过' : (item.status === 'pending' ? '待审核' : '已拒绝')}}</text>
+            <view class="action-btn edit" bindtap="editPostCat" data-id="{{item.id}}" data-catid="{{item.cat_id}}"><view class="icon icon-cat icon-sm" style="color:var(--color-primary)"></view>关联猫</view>
+            <view class="action-btn delete" wx:if="{{userRole !== 'admin'}}" bindtap="deletePost" data-id="{{item.id}}"><view class="icon icon-trash icon-sm" style="color:var(--color-danger)"></view>删除</view>
+          </view>
+        </view>
+        <view class="empty-state" wx:if="{{currentPostsLength === 0}}"><view class="icon icon-check icon-sm" style="color:var(--color-success);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>暂无帖子</view>
+      </view>
+    </view>
+
+    <!-- 猫咪管理 -->
+    <view wx:if="{{currentTab === 'catmgmt'}}">
+      <view class="section-header">全部猫咪（{{allCats.length}} 只）</view>
+      <view class="cat-card" wx:for="{{allCats}}" wx:key="id">
+        <image class="cat-sm-avatar" src="{{item.avatar}}" mode="aspectFill" />
+        <view class="cat-info"><text class="cat-name">{{item.name}}</text><text class="cat-brief">{{item.color}} · {{item.gender}}</text></view>
+        <view class="cat-actions"><view class="act-btn edit" bindtap="editCat" data-id="{{item.id}}" data-name="{{item.name}}" data-gender="{{item.gender}}" data-color="{{item.color}}" data-age="{{item.age}}" data-neutered="{{item.neutered}}" data-status="{{item.status}}" data-personality="{{item.personality}}" data-favorite_food="{{item.favorite_food}}" data-locations="{{item.locations}}" data-story="{{item.story}}" data-health_status="{{item.health_status}}"><view class="icon icon-edit icon-sm" style="color:var(--color-primary)"></view>编辑</view><view class="act-btn del" wx:if="{{userRole !== 'admin'}}" bindtap="deleteCat" data-id="{{item.id}}" data-name="{{item.name}}"><view class="icon icon-trash icon-sm" style="color:var(--color-danger)"></view>删除</view></view>
+      </view>
+      <view class="form-card" wx:if="{{showEditForm}}">
+        <text class="section-subtitle">{{editCatId ? '编辑猫咪' : '新增猫咪'}}</text>
+        <view class="form-item"><text class="field-label">猫咪头像</text><view class="avatar-picker" bindtap="chooseCatAvatar"><image wx:if="{{catAvatarPath}}" src="{{catAvatarPath}}" mode="aspectFill" class="avatar-preview" /><view wx:else class="avatar-placeholder"><text>+</text></view></view></view>
+        <view class="form-item"><text class="field-label">猫咪名字</text><input class="input" placeholder="例：Beta" value="{{newCat.name}}" bindinput="onNewCatInput" data-field="name" /></view>
+        <view class="form-item row">
+          <view class="half"><text class="field-label">性别</text><input class="input" placeholder="公 / 母" value="{{newCat.gender}}" bindinput="onNewCatInput" data-field="gender" /></view>
+          <view class="half"><text class="field-label">颜色</text><input class="input" placeholder="例：橘白" value="{{newCat.color}}" bindinput="onNewCatInput" data-field="color" /></view>
+        </view>
+        <view class="form-item row">
+          <view class="half"><text class="field-label">年龄</text><input class="input" placeholder="例：约1岁" value="{{newCat.age}}" bindinput="onNewCatInput" data-field="age" /></view>
+          <view class="half">
+            <text class="field-label">绝育</text>
+            <view class="switch-row">
+              <switch checked="{{newCat.neutered}}" bindchange="onNeuteredChange" color="#E8885A" />
+              <text class="switch-label">{{newCat.neutered ? '已绝育' : '未绝育'}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="form-item"><text class="field-label">性格</text><input class="input" placeholder="例：亲人，爱撒娇" value="{{newCat.personality}}" bindinput="onNewCatInput" data-field="personality" /></view>
+        <view class="form-item"><text class="field-label">常出没地点</text><input class="input" placeholder="例：北三食堂门口" value="{{newCat.locations}}" bindinput="onNewCatInput" data-field="locations" /></view>
+        <view class="form-item"><text class="field-label">健康状况</text><input class="input" placeholder="例：健康，已驱虫" value="{{newCat.health_status}}" bindinput="onNewCatInput" data-field="health_status" /></view>
+        <view class="form-item"><text class="field-label">状态</text><view class="picker-row">
+          <view class="picker-opt {{newCat.status === '在校' ? 'picked' : ''}}" bindtap="pickStatus" data-status="在校">在校</view>
+          <view class="picker-opt {{newCat.status === '已领养' ? 'picked' : ''}}" bindtap="pickStatus" data-status="已领养">已领养</view>
+          <view class="picker-opt {{newCat.status === '喵星' ? 'picked' : ''}}" bindtap="pickStatus" data-status="喵星">喵星</view>
+        </view></view>
+        <view class="form-item"><text class="field-label">爱吃的</text><input class="input" placeholder="例：猫条，鸡胸肉" value="{{newCat.favorite_food}}" bindinput="onNewCatInput" data-field="favorite_food" /></view>
+        <view class="form-item"><text class="field-label">故事</text><textarea class="textarea" placeholder="讲讲这只猫的故事" value="{{newCat.story}}" bindinput="onNewCatInput" data-field="story" /></view>
+        <view class="form-btns"><button class="submit-btn" bindtap="addCat">{{editCatId ? '保存修改' : '新增猫咪'}}</button><button class="cancel-btn" bindtap="cancelEdit">取消</button></view>
+      </view>
+      <view class="add-cat-btn" wx:if="{{!showEditForm}}" bindtap="showAddForm"><view class="icon icon-plus icon-sm" style="color:var(--color-primary)"></view>新增猫咪</view>
+     </view>
+
+    <!-- 用户管理（合并用户列表+管理员申请+待审核用户） -->
+    <view wx:if="{{currentTab === 'users'}}">
+      <view class="section-header"><view class="icon icon-users icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>用户管理</view>
+      <view class="sub-tabs">
+        <view class="sub-tab {{usersSubTab === 'all' ? 'active' : ''}}" bindtap="switchUsersSub" data-sub="all">所有用户</view>
+        <view class="sub-tab {{usersSubTab === 'apps' ? 'active' : ''}}" bindtap="switchUsersSub" data-sub="apps">管理员申请 <text class="sub-count" wx:if="{{adminAppCount > 0}}">{{adminAppCount}}</text></view>
+        <view class="sub-tab {{usersSubTab === 'pending' ? 'active' : ''}}" bindtap="switchUsersSub" data-sub="pending">待审核 <text class="sub-count" wx:if="{{pendingUsers > 0}}">{{pendingUsers}}</text></view>
+      </view>
+
+      <view wx:if="{{usersSubTab === 'all'}}">
+        <view class="dev-table">
+          <view class="dev-table-row header"><text class="dev-table-cell name">昵称</text><text class="dev-table-cell role" wx:if="{{userRole !== 'developer'}}">角色</text><text class="dev-table-cell role-col" wx:else>角色/称号</text><text class="dev-table-cell pwd" wx:if="{{userRole === 'developer'}}">密码</text><text class="dev-table-cell action">操作</text></view>
+          <view class="dev-table-row" wx:for="{{adminUsers}}" wx:key="id">
+            <text class="dev-table-cell name">{{item.nickname}}</text>
+            <text class="dev-table-cell role-col" wx:if="{{userRole === 'developer'}}">
+              <text class="role-badge {{item.role}}">{{item.role === 'developer' ? '开发者' : (item.role === 'admin' ? '管理员' : (item.role === 'rongdada' ? '荣大大' : (item.role === 'user' ? '用户' : item.role)))}}</text>
+              <text class="title-badge" wx:if="{{item.title}}">{{item.title}}</text>
+            </text>
+            <text class="dev-table-cell role" wx:else><text class="role-badge {{item.role}}">{{item.role === 'developer' ? '开发者' : (item.role === 'admin' ? '管理员' : (item.role === 'rongdada' ? '荣大大' : (item.role === 'user' ? '用户' : item.role)))}}</text></text>
+            <text class="dev-table-cell pwd" wx:if="{{userRole === 'developer'}}">{{item.password || '-'}}</text>
+            <view class="dev-table-cell action">
+              <view class="dev-btn sm" wx:if="{{userRole === 'developer' && item.role !== 'developer' && item.role !== 'rongdada'}}" bindtap="adminEditUser" data-id="{{item.id}}" data-name="{{item.nickname}}" data-role="{{item.role}}" data-title="{{item.title}}">升级</view>
+              <view class="dev-btn sm" wx:if="{{userRole === 'developer' && item.role === 'rongdada'}}" bindtap="adminEditUser" data-id="{{item.id}}" data-name="{{item.nickname}}" data-role="{{item.role}}" data-title="{{item.title}}">降级</view>
+              <view class="dev-btn sm" wx:if="{{(userRole === 'developer' || userRole === 'rongdada') && item.role === 'admin'}}" bindtap="revokeRole" data-id="{{item.id}}" data-name="{{item.nickname}}">取消权限</view>
+              <text class="no-op-text" wx:elif="{{item.role === 'developer' || item.role === 'rongdada' || (item.role === 'admin' && userRole === 'admin')}}">—</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{usersSubTab === 'apps'}}">
+        <view class="section-subheader">管理员申请</view>
+        <view class="dev-table">
+          <view class="dev-table-row header"><text class="dev-table-cell name">申请人</text><view class="dev-table-cell action">操作</view></view>
+          <view class="dev-table-row" wx:for="{{adminAppList}}" wx:key="id"><text class="dev-table-cell name">{{item.nickname}}</text><view class="dev-table-cell action"><view class="dev-btn sm" bindtap="approveAdminApp" data-id="{{item.id}}" data-name="{{item.nickname}}">升级</view><view class="dev-btn sm del" bindtap="rejectAdminApp" data-id="{{item.id}}" data-name="{{item.nickname}}">拒绝</view></view></view>
+        </view>
+        <view class="empty-state" wx:if="{{adminAppList.length === 0}}"><view class="icon icon-check icon-sm" style="color:var(--color-success);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>暂无管理员申请</view>
+
+        <view class="section-subheader" style="margin-top:32rpx">待审核用户</view>
+        <view class="dev-table">
+          <view class="dev-table-row header"><text class="dev-table-cell name">用户</text><view class="dev-table-cell action">操作</view></view>
+          <view class="dev-table-row" wx:for="{{pendingUserList}}" wx:key="id"><text class="dev-table-cell name">{{item.nickname}}</text><view class="dev-table-cell action"><view class="dev-btn sm" bindtap="approveUser" data-id="{{item.id}}" data-name="{{item.nickname}}">通过</view><view class="dev-btn sm del" bindtap="rejectUser" data-id="{{item.id}}" data-name="{{item.nickname}}">拒绝</view></view></view>
+        </view>
+        <view class="empty-state" wx:if="{{pendingUserList.length === 0}}"><text>没有待审核的用户</text></view>
+      </view>
+    </view>
+
+    <!-- 义卖管理 -->
+    <view wx:if="{{currentTab === 'products'}}">
+      <view class="section-header">🏪 义卖商品管理（{{products.length}}）</view>
+      <view class="product-grid">
+        <view class="product-card" wx:for="{{products}}" wx:key="id">
+          <image class="prod-img" src="{{item.image}}" mode="aspectFill" />
+          <view class="prod-info">
+            <text class="prod-name">{{item.name}}</text>
+            <text class="prod-price">¥{{item.price}}</text>
+            <text class="prod-status {{item.status}}">{{item.status === 'on_sale' ? '在售' : (item.status === 'sold_out' ? '已售罄' : '已下架')}}</text>
+          </view>
+          <view class="prod-actions">
+            <view class="dev-btn" bindtap="editProduct" data-id="{{item.id}}" data-name="{{item.name}}" data-price="{{item.price}}" data-desc="{{item.description}}" data-category="{{item.category}}" data-status="{{item.status}}">编辑</view>
+            <view class="dev-btn del" bindtap="deleteProduct" data-id="{{item.id}}" data-name="{{item.name}}">删除</view>
+          </view>
+        </view>
+      </view>
+      <view class="empty-state" wx:if="{{products.length === 0}}"><text>暂无商品</text></view>
+      <view class="add-cat-btn" bindtap="showAddProduct"><view class="icon icon-plus icon-sm" style="color:var(--color-primary)"></view>上架商品</view>
+      <view class="form-card" wx:if="{{showProductForm}}">
+        <text class="section-subtitle">{{editProductId ? '✏️ 编辑商品' : '📝 上架商品'}}</text>
+        <view class="form-item"><text class="field-label">商品名称</text><input class="input" placeholder="例：猫咪主题明信片" value="{{productForm.name}}" bindinput="onProductInput" data-field="name" /></view>
+        <view class="form-item"><text class="field-label">价格</text><input class="input" placeholder="0.00" value="{{productForm.price}}" bindinput="onProductInput" data-field="price" /></view>
+        <view class="form-item"><text class="field-label">描述</text><textarea class="textarea" placeholder="商品详细描述" value="{{productForm.description}}" bindinput="onProductInput" data-field="description" /></view>
+        <view class="form-item"><text class="field-label">图片</text><view class="avatar-picker" bindtap="chooseProductImage"><image wx:if="{{productImagePath}}" src="{{productImagePath}}" mode="aspectFill" class="avatar-preview" /><view wx:else class="avatar-placeholder"><text>+</text></view></view></view>
+        <view class="form-item"><text class="field-label">分类</text><picker mode="selector" range="{{productCategories}}" value="{{productCategoryIndex}}" bindchange="onProductCategoryChange"><view class="input picker-display">{{productForm.category || '选择分类'}}</view></picker></view>
+        <view class="form-item"><text class="field-label">状态</text><view class="picker-row">
+          <view class="picker-opt {{productForm.status === 'on_sale' ? 'picked' : ''}}" bindtap="pickProductStatus" data-status="on_sale">在售</view>
+          <view class="picker-opt {{productForm.status === 'sold_out' ? 'picked' : ''}}" bindtap="pickProductStatus" data-status="sold_out">已售罄</view>
+          <view class="picker-opt {{productForm.status === 'hidden' ? 'picked' : ''}}" bindtap="pickProductStatus" data-status="hidden">已下架</view>
+        </view></view>
+        <view class="form-btns"><button class="submit-btn" bindtap="saveProduct">{{editProductId ? '保存修改' : '上架'}}</button><button class="cancel-btn" bindtap="cancelProductForm">取消</button></view>
+      </view>
+      <view class="form-card" style="margin-top:20rpx" wx:if="{{!showProductForm}}">
+        <text class="section-subtitle">📂 商品类别管理</text>
+        <view class="cat-tags">
+          <view class="cat-tag" wx:for="{{productCategories}}" wx:key="*this">
+            <text class="cat-tag-text">{{item}}</text>
+            <text class="cat-tag-del" bindtap="deleteCategory" data-name="{{item}}">✕</text>
+          </view>
+        </view>
+        <view class="form-item"><text class="field-label">新增类别</text><view class="row"><input class="input half" placeholder="输入类别名称" value="{{newCategoryName}}" bindinput="onCategoryNameInput" /><button class="dev-btn" bindtap="doAddCategory">添加</button></view></view>
+      </view>
+    </view>
+
+    <!-- 学生管理（荣大大/开发者） -->
+    <view wx:if="{{currentTab === 'students'}}">
+      <view class="section-header"><view class="icon icon-users icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>学生花名册管理</view>
+      <view class="section-desc">添加学号到花名册后，学生首次微信登录时需验证学号并设置密码。</view>
+
+      <view class="form-card">
+        <view class="form-title"><view class="icon icon-plus icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>添加学生</view>
+        <view class="form-item"><text class="field-label">学号</text><input class="input" placeholder="请输入学号" value="{{newStudentId}}" bindinput="onNewStudentId" /></view>
+        <view class="form-item"><text class="field-label">姓名</text><input class="input" placeholder="学生姓名（可选）" value="{{newStudentName}}" bindinput="onNewStudentName" /></view>
+        <view class="form-item"><text class="field-label">默认密码</text><input class="input" placeholder="留空则默认=学号" value="{{newStudentPwd}}" bindinput="onNewStudentPwd" /></view>
+        <button class="add-btn" bindtap="addStudent"><view class="icon icon-plus icon-sm" style="margin-right:6rpx;display:inline-block;vertical-align:middle"></view>添加</button>
+      </view>
+
+      <view class="form-card">
+        <view class="form-title"><view class="icon icon-upload icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>批量导入</view>
+        <view class="form-item">
+          <text class="field-label">粘贴 JSON 数组：[{"studentId":"学号","name":"姓名","password":"密码"}]</text>
+          <textarea class="input textarea" placeholder='[{"studentId":"2024010","name":"张三"},{"studentId":"2024011","name":"李四"}]' value="{{batchStudentJson}}" bindinput="onBatchStudentJson" />
+        </view>
+        <button class="add-btn" bindtap="batchAddStudents"><view class="icon icon-upload icon-sm" style="margin-right:6rpx;display:inline-block;vertical-align:middle"></view>批量导入</button>
+      </view>
+
+      <view class="section-header" style="margin-top:30rpx"><view class="icon icon-list icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>已导入学生（{{studentList.length}}）</view>
+      <view class="dev-table">
+        <view class="dev-table-row header"><text class="dev-table-cell w-30">学号</text><text class="dev-table-cell w-40">姓名</text><text class="dev-table-cell w-30">操作</text></view>
+        <view class="dev-table-row" wx:for="{{studentList}}" wx:key="id">
+          <text class="dev-table-cell w-30">{{item.student_id}}</text>
+          <text class="dev-table-cell w-40">{{item.name || '-'}}</text>
+          <view class="dev-table-cell w-30 action"><view class="dev-btn danger" bindtap="deleteStudent" data-id="{{item.student_id}}"><view class="icon icon-trash icon-sm" style="margin-right:4rpx;display:inline-block;vertical-align:middle"></view>删除</view></view>
+        </view>
+      </view>
+      <view class="empty-state" wx:if="{{studentList.length === 0}}"><text>还未导入学生，请在上方添加</text></view>
+    </view>
+
+    <!-- 志愿管理 -->
+    <view wx:if="{{currentTab === 'volunteerMgmt'}}">
+      <view class="section-header"><view class="icon icon-heart icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>志愿任务管理（{{volunteerTasks.length}}）</view>
+      <!-- 发布按钮移到顶部 -->
+      <view class="add-cat-btn" wx:if="{{(userRole === 'admin' || userRole === 'rongdada') && !showAppList && !showTaskForm}}" bindtap="showAddTask"><view class="icon icon-plus icon-sm" style="color:var(--color-primary)"></view>发布志愿任务</view>
+
+      <!-- 发布/编辑志愿任务表单（紧跟在按钮下方） -->
+      <view class="form-card" wx:if="{{showTaskForm && !showAppList}}">
+        <text class="section-subtitle">{{editTaskId ? '编辑任务' : '发布志愿任务'}}</text>
+        <view class="form-item"><text class="field-label">任务标题</text><input class="input" placeholder="例：校园猫咪喂食志愿者招募" value="{{taskForm.title}}" bindinput="onTaskInput" data-field="title" /></view>
+        <view class="form-item"><text class="field-label">活动地点</text><input class="input" placeholder="例：北校区食堂后门" value="{{taskForm.location}}" bindinput="onTaskInput" data-field="location" /></view>
+        <view class="form-item row">
+          <view class="half">
+            <text class="field-label">活动日期</text>
+            <picker mode="date" value="{{taskForm.date_time_date}}" bindchange="onTaskDateChange" data-field="date_time_date">
+              <view class="input picker-display">{{taskForm.date_time_date || '选择日期'}}</view>
+            </picker>
+          </view>
+          <view class="half">
+            <text class="field-label">活动时间</text>
+            <picker mode="time" value="{{taskForm.date_time_time}}" bindchange="onTaskDateChange" data-field="date_time_time">
+              <view class="input picker-display">{{taskForm.date_time_time || '选择时间'}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="form-item row">
+          <view class="half">
+            <text class="field-label">报名截止日期</text>
+            <picker mode="date" value="{{taskForm.deadline_date}}" bindchange="onTaskDateChange" data-field="deadline_date">
+              <view class="input picker-display">{{taskForm.deadline_date || '选择日期'}}</view>
+            </picker>
+          </view>
+          <view class="half">
+            <text class="field-label">报名截止时间</text>
+            <picker mode="time" value="{{taskForm.deadline_time}}" bindchange="onTaskDateChange" data-field="deadline_time">
+              <view class="input picker-display">{{taskForm.deadline_time || '选择时间'}}</view>
+            </picker>
+          </view>
+        </view>
+        <view class="form-item"><text class="field-label">需要人数</text><input class="input" placeholder="5" type="digit" value="{{taskForm.slots_needed}}" bindinput="onTaskInput" data-field="slots_needed" /></view>
+        <view class="form-item" wx:if="{{editTaskId}}"><text class="field-label">状态</text><view class="picker-row">
+          <view class="picker-opt {{taskForm.status === 'recruiting' ? 'picked' : ''}}" bindtap="pickTaskStatus" data-status="recruiting">招募中</view>
+          <view class="picker-opt {{taskForm.status === 'closed' ? 'picked' : ''}}" bindtap="pickTaskStatus" data-status="closed">已截止</view>
+          <view class="picker-opt {{taskForm.status === 'completed' ? 'picked' : ''}}" bindtap="pickTaskStatus" data-status="completed">已完成</view>
+        </view></view>
+        <view class="form-item"><text class="field-label">任务描述</text><textarea class="textarea" placeholder="详细描述志愿活动内容和要求" value="{{taskForm.description}}" bindinput="onTaskInput" data-field="description" /></view>
+        <view class="form-btns"><button class="submit-btn" bindtap="saveTask">{{editTaskId ? '保存修改' : '发布任务'}}</button><button class="cancel-btn" bindtap="cancelTaskForm">取消</button></view>
+      </view>
+
+      <view class="card-list" wx:if="{{!showAppList}}">
+        <view class="post-card" wx:for="{{volunteerTasks}}" wx:key="id">
+          <view class="card-head"><text class="card-user">{{item.title}}</text><text class="card-time">{{item.created_at}}</text></view>
+          <!-- 新报名待确认提示 -->
+          <view class="pending-apps-badge" wx:if="{{item.pending_apps > 0}}">
+            <view class="icon icon-info icon-sm" style="color:var(--color-warning)"></view>
+            <text class="pending-apps-text">{{item.pending_apps}} 个新报名待确认</text>
+          </view>
+          <text class="card-text" wx:if="{{item.creator_name}}">发布人：{{item.creator_name}}</text>
+          <text class="card-text">时间：{{item.date_time}} · 地点：{{item.location}}</text>
+          <text class="card-text">报名：{{item.slots_filled}}/{{item.slots_needed}} 人 · 状态：{{item.status}}</text>
+          <view class="card-actions">
+            <button class="action-btn share-btn" open-type="share" data-id="{{item.id}}" data-title="{{item.title}}"><view class="icon icon-share icon-sm" style="color:var(--color-primary)"></view>分享</button>
+            <view class="action-btn" wx:if="{{userRole === 'admin' || userRole === 'rongdada'}}" bindtap="editVolunteerTask" data-id="{{item.id}}"><view class="icon icon-edit icon-sm" style="color:var(--color-primary)"></view>编辑</view>
+            <view class="action-btn" wx:if="{{userRole === 'developer' || userRole === 'rongdada'}}" bindtap="deleteVolunteerTask" data-id="{{item.id}}" data-title="{{item.title}}"><view class="icon icon-trash icon-sm" style="color:var(--color-danger)"></view>删除</view>
+            <view class="action-btn" bindtap="viewVolunteerApps" data-id="{{item.id}}" data-title="{{item.title}}"><view class="icon icon-users icon-sm" style="color:var(--color-primary)"></view>报名列表</view>
+          </view>
+        </view>
+      </view>
+      <view class="empty-state" wx:if="{{volunteerTasks.length === 0}}"><text>暂无志愿任务</text></view>
+
+      <!-- 报名列表 -->
+      <view wx:if="{{showAppList}}">
+        <view class="section-header"><view class="icon icon-users icon-sm" style="color:var(--text-secondary);margin-right:6rpx"></view>{{appListTitle}} — 报名列表（{{appList.length}}）</view>
+        <view class="dev-table">
+          <view class="dev-table-row header"><text class="dev-table-cell name">昵称</text><text class="dev-table-cell">联系方式</text><text class="dev-table-cell">备注</text><text class="dev-table-cell">状态</text><text class="dev-table-cell action">操作</text></view>
+          <view class="dev-table-row" wx:for="{{appList}}" wx:key="id">
+            <text class="dev-table-cell name">{{item.nickname}}</text>
+            <text class="dev-table-cell">{{item.contact_info}}</text>
+            <text class="dev-table-cell">{{item.note}}</text>
+            <text class="dev-table-cell"><text class="status-badge {{item.status}}">{{item.status === 'pending' ? '待确认' : (item.status === 'confirmed' ? '已确认' : '已参加')}}</text></text>
+            <view class="dev-table-cell action">
+              <view class="dev-btn" wx:if="{{item.status === 'pending'}}" bindtap="confirmApp" data-id="{{item.id}}">确认</view>
+              <view class="dev-btn" wx:if="{{item.status === 'confirmed'}}" bindtap="markAttended" data-id="{{item.id}}">已参加</view>
+            </view>
+          </view>
+        </view>
+        <view class="empty-state" wx:if="{{appList.length === 0}}"><text>暂无报名</text></view>
+        <view class="add-cat-btn" bindtap="closeAppList"><view class="icon icon-list icon-sm" style="color:var(--color-primary)"></view>返回任务列表</view>
+      </view>
+    </view>
+  <!-- 编辑用户弹窗 -->
+  <view class="modal-mask" wx:if="{{editUserForm.show}}" bindtap="cancelEditUser">
+    <view class="modal-content" catchtap="emptyHandler">
+      <view class="modal-title">编辑用户 — {{editUserForm.nickname}}</view>
+      <view class="form-group">
+        <text class="form-label">昵称</text>
+        <input class="form-input" placeholder="新昵称（留空不修改）" value="{{editUserForm.newNickname}}" bindinput="onEditUserInput" data-field="newNickname" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">密码</text>
+        <input class="form-input" placeholder="新密码（留空不修改）" value="{{editUserForm.newPassword}}" bindinput="onEditUserInput" data-field="newPassword" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">角色</text>
+        <view class="role-picker">
+          <view class="role-option {{editUserForm.newRole === 'user' ? 'selected' : ''}}" bindtap="pickEditUserRole" data-role="user">用户</view>
+          <view class="role-option {{editUserForm.newRole === 'admin' ? 'selected' : ''}}" bindtap="pickEditUserRole" data-role="admin">管理员</view>
+          <view class="role-option {{editUserForm.newRole === 'rongdada' ? 'selected' : ''}}" bindtap="pickEditUserRole" data-role="rongdada">荣大大</view>
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="form-label">称号</text>
+        <view class="role-picker">
+          <view class="role-option {{editUserForm.newTitle === '' ? 'selected' : ''}}" bindtap="pickEditUserTitle" data-title="">无</view>
+          <view class="role-option {{editUserForm.newTitle === '社长' ? 'selected' : ''}}" bindtap="pickEditUserTitle" data-title="社长">社长</view>
+          <view class="role-option {{editUserForm.newTitle === '副社长' ? 'selected' : ''}}" bindtap="pickEditUserTitle" data-title="副社长">副社长</view>
+          <view class="role-option {{editUserForm.newTitle === '核心成员' ? 'selected' : ''}}" bindtap="pickEditUserTitle" data-title="核心成员">核心成员</view>
+        </view>
+      </view>
+      <view class="modal-actions">
+        <view class="modal-btn cancel" bindtap="cancelEditUser">取消</view>
+        <view class="modal-btn confirm" bindtap="submitEditUser">保存</view>
+      </view>
+    </view>
+  </view>
+
+  </view>
+</view>

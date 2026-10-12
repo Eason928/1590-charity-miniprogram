@@ -1,0 +1,55 @@
+<view class="container">
+  <!-- 头部：头像 + 名字 -->
+  <view class="profile">
+    <view class="avatar-wrap">
+      <image src="{{cat.avatar}}" mode="aspectFill" />
+    </view>
+    <text class="name">{{cat.name}}</text>
+    <view class="tags">
+      <text class="tag">{{cat.color}}</text>
+      <text class="tag">{{cat.gender}}</text>
+      <view class="tag" wx:if="{{cat.neutered}}"><view class="icon icon-check icon-sm" style="color:var(--color-success);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>已绝育</view>
+      <view class="tag" wx:else><view class="icon icon-x icon-sm" style="color:var(--color-danger);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>未绝育</view>
+    </view>
+  </view>
+
+  <!-- 详细信息卡片 -->
+  <view class="info-card">
+    <view class="info-item">
+      <view class="label"><view class="icon icon-heart icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>性格</view>
+      <text class="value">{{cat.personality}}</text>
+    </view>
+    <view class="info-item">
+      <view class="label"><view class="icon icon-food icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>爱吃的</view>
+      <text class="value">{{cat.favorite_food}}</text>
+    </view>
+    <view class="info-item">
+      <view class="label"><view class="icon icon-location icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>常出没地点</view>
+      <text class="value">{{cat.locations}}</text>
+    </view>
+    <view class="info-item">
+      <view class="label"><view class="icon icon-info icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>故事</view>
+      <text class="value">{{cat.story}}</text>
+    </view>
+    <view class="info-item">
+      <text class="label">🩺 健康状况</text>
+      <text class="value {{cat.health_status === '健康' ? 'healthy' : 'warn'}}">{{cat.health_status}}</text>
+    </view>
+  </view>
+
+  <!-- 投喂建议 -->
+  <view class="tip-card">
+    <view class="tip-title"><view class="icon icon-info icon-sm" style="color:var(--color-accent);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>投喂小提示</view>
+    <text class="tip-text">请使用猫粮或专用零食投喂，不要投喂人类食物（巧克力、洋葱等对猫咪有毒）。保持适量，避免猫咪过胖哦！</text>
+  </view>
+
+  <!-- 论坛相关帖子 -->
+  <view class="forum-section" wx:if="{{posts.length > 0}}">
+    <view class="section-title"><view class="icon icon-message icon-sm" style="color:var(--text-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>TA 的猫友圈</view>
+    <view class="forum-post" wx:for="{{posts}}" wx:key="id">
+      <image wx:if="{{item.image}}" src="{{item.image}}" mode="widthFix" class="forum-image" />
+      <text class="forum-text">{{item.text}}</text>
+      <text class="forum-user">— {{item.nickname}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,66 @@
+<view class="container">
+  <!-- 开发者看到的管理面板 -->
+  <view wx:if="{{isDeveloper}}" class="dev-panel">
+    <view class="section-header">所有用户反馈（{{allFeedback.length}}）</view>
+    <view class="filter-tabs">
+      <view class="filter-tab {{filterType === 'all' ? 'active' : ''}}" bindtap="setFilter" data-type="all">全部</view>
+      <view class="filter-tab {{filterType === 'pending' ? 'active' : ''}}" bindtap="setFilter" data-type="pending">待处理</view>
+      <view class="filter-tab {{filterType === 'resolved' ? 'active' : ''}}" bindtap="setFilter" data-type="resolved">已处理</view>
+    </view>
+    <view class="fb-list">
+      <view class="fb-card" wx:for="{{filteredFeedback}}" wx:key="id" wx:for-item="fb">
+        <view class="fb-header">
+          <text class="fb-user">{{fb.nickname || fb.user_name || '用户'}}</text>
+          <text class="fb-type type-{{fb.type}}">{{fb.type === 'bug' ? 'Bug' : (fb.type === 'suggestion' ? '建议' : '其他')}}</text>
+          <text class="fb-status status-{{fb.status}}">{{fb.status === 'resolved' ? '已处理' : '待处理'}}</text>
+        </view>
+        <text class="fb-content">{{fb.content}}</text>
+        <view class="fb-meta">
+          <text class="fb-time">{{fb.created_at}}</text>
+          <view wx:if="{{fb.status === 'pending'}}" class="fb-resolve-btn" bindtap="markResolved" data-id="{{fb.id}}">标记已处理</view>
+          <text wx:else class="fb-resolved-text"><view class="icon icon-check icon-sm" style="display:inline-block;vertical-align:middle;margin-right:4rpx"></view>已处理</text>
+        </view>
+      </view>
+      <view class="empty" wx:if="{{filteredFeedback.length === 0}}"><text class="empty-text">暂无反馈</text></view>
+    </view>
+  </view>
+
+  <!-- 普通用户/管理员/荣大大：提交反馈 -->
+  <view wx:else>
+    <view class="form-card">
+      <view class="form-title"><view class="icon icon-message icon-sm" style="color:#1A73E8;margin-right:8rpx;display:inline-block;vertical-align:middle"></view>提交反馈</view>
+      <view class="form-item">
+        <text class="field-label">类型</text>
+        <picker range="{{typeOptions}}" value="{{selectedTypeIndex}}" bindchange="onTypeChange">
+          <view class="picker-text">{{typeOptions[selectedTypeIndex]}}</view>
+        </picker>
+      </view>
+      <view class="form-item">
+        <text class="field-label">反馈内容</text>
+        <textarea class="input textarea" placeholder="请输入你的反馈意见..." value="{{feedbackContent}}" bindinput="onContentInput" maxlength="1000" />
+        <text class="char-count">{{feedbackContent.length}}/1000</text>
+      </view>
+      <button class="submit-btn" bindtap="submitFeedback"><view class="icon icon-send icon-sm" style="margin-right:6rpx;display:inline-block;vertical-align:middle"></view>提交反馈</button>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 我的反馈历史 -->
+    <view class="section-header">我的反馈（{{myFeedback.length}}）</view>
+    <view class="fb-list">
+      <view class="fb-card" wx:for="{{myFeedback}}" wx:key="id" wx:for-item="fb">
+        <view class="fb-header">
+          <text class="fb-type type-{{fb.type}}">{{fb.type === 'bug' ? 'Bug' : (fb.type === 'suggestion' ? '建议' : '其他')}}</text>
+          <text class="fb-status status-{{fb.status}}">{{fb.status === 'resolved' ? '已处理' : '待处理'}}</text>
+        </view>
+        <text class="fb-content">{{fb.content}}</text>
+        <view class="fb-reply" wx:if="{{fb.reply}}">
+          <view class="icon icon-message icon-sm" style="color:#1A73E8;margin-right:6rpx;display:inline-block;vertical-align:middle"></view>
+          <text class="reply-text">{{fb.reply}}</text>
+        </view>
+        <text class="fb-time">{{fb.created_at}}</text>
+      </view>
+      <view class="empty" wx:if="{{myFeedback.length === 0}}"><text class="empty-text">还没有提交过反馈</text></view>
+    </view>
+  </view>
+</view>

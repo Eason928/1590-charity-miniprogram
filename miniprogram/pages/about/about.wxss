@@ -1,0 +1,146 @@
+.container {
+  padding: 40rpx 32rpx;
+  background-color: #FFF6E5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== Logo ===== */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.logo-image {
+  width: 150%;                    /* ← 改百分比控制宽度，如 80% */
+  max-width: 5000rpx;              /* ← 调这里改最大宽度限制 */
+  display: block;
+  margin: 0 auto;                 /* ← auto居中，偏右改 auto 为具体数值 */
+  border-radius: 32rpx;          /* ← 调这里改圆角 */
+  /* 微调位置：去掉下面注释 */
+ position: relative; left: -220rpx; 
+}
+
+/* ===== 卡片 ===== */
+.card {
+  background: #fff;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+/* 卡片头部 — 可点击区域 */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 28rpx 20rpx;
+  /* 扩大点击区域 */
+  position: relative;
+}
+.card-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #C67B4E;
+}
+
+.card-arrow {
+  font-size: 28rpx;
+  color: #E8885A;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+.arrow-up {
+  transform: rotate(180deg);
+}
+.arrow-down {
+  transform: rotate(0deg);
+}
+
+/* 卡片主体 — 展开/收起动画 */
+.card-body {
+  padding: 0 28rpx 28rpx;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.body-show {
+  max-height: 1200rpx;
+  opacity: 1;
+}
+.body-hide {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ===== 占位文字 ===== */
+.placeholder-text {
+  font-size: 28rpx;
+  color: #ccc;
+  display: block;
+  line-height: 1.8;
+}
+
+/* ===== 子项目 ===== */
+.sub-item {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 0;
+}
+.sub-item-icon {
+  font-size: 32rpx;
+  margin-right: 16rpx;
+  width: 44rpx;
+  text-align: center;
+  flex-shrink: 0;
+}
+.sub-item-text {
+  font-size: 28rpx;
+  color: #ccc;
+}
+
+/* ===== 帮助方式 ===== */
+.help-item {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 0;
+}
+.help-icon {
+  font-size: 36rpx;
+  margin-right: 16rpx;
+  width: 50rpx;
+  text-align: center;
+}
+.help-text {
+  font-size: 28rpx;
+  color: #555;
+}
+
+/* ===== Footer ===== */
+.footer {
+  text-align: center;
+  padding: 40rpx 0 20rpx;
+}
+.footer-text {
+  font-size: 22rpx;
+  color: #bbb;
+}
+.footer-dev {
+  font-size: 22rpx;
+  color: #bbb;
+  display: block;
+  margin-top: 8rpx;
+}

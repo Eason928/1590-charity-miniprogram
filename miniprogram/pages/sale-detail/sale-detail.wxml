@@ -1,0 +1,57 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 大图展示 -->
+    <view class="image-wrap">
+      <image src="{{product.image || '/images/logo/club-logo.png'}}" mode="aspectFill" class="main-image" />
+    </view>
+
+    <!-- 商品信息卡片 -->
+    <view class="info-card">
+      <!-- 名称 + 价格 -->
+      <view class="title-row">
+        <text class="product-name">{{product.name}}</text>
+        <text class="product-price">¥{{product.price}}</text>
+      </view>
+
+      <!-- 类别标签 -->
+      <view class="tags" wx:if="{{product.category}}">
+        <text class="tag">{{product.category}}</text>
+      </view>
+
+      <!-- 分隔线 -->
+      <view class="divider"></view>
+
+      <!-- 详细描述 -->
+      <view class="desc-section">
+        <text class="desc-label"><view class="icon icon-edit icon-sm" style="color:var(--text-tertiary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>商品描述</text>
+        <text class="desc-text" wx:if="{{product.description}}">{{product.description}}</text>
+        <text class="desc-text empty-desc" wx:else>暂无详细描述</text>
+      </view>
+
+      <!-- 库存信息 -->
+      <view class="info-row" wx:if="{{product.stock !== undefined}}">
+        <text class="info-label">库存</text>
+        <text class="info-value">{{product.stock > 0 ? product.stock + ' 件' : '已售罄'}}</text>
+      </view>
+    </view>
+
+    <!-- 底部说明 -->
+    <view class="notice-card">
+      <view class="icon icon-heart icon-sm" style="color:var(--color-accent)"></view>
+      <view class="notice-text-wrap">
+        <text class="notice-title">纯展示不售卖</text>
+        <text class="notice-desc">本页面仅作为义卖商品展示用途，暂不支持在线购买。如有意向请联系社团成员。</text>
+      </view>
+    </view>
+
+    <!-- 返回按钮 -->
+    <view class="back-btn-wrap">
+      <button class="back-btn" bindtap="goBack">← 返回义卖列表</button>
+    </view>
+  </block>
+</view>

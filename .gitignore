@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════
+#  公益社小程序 —— 上传排除清单
+# ═══════════════════════════════════════════
+
+# ── 非代码内容：文档 / 素材 / 存档记录（不上传）──
+/project record/
+/测试素材/
+/存档记录/
+/*.docx
+/.~*
+/miniprogram/*Easter Eggs
+
+# ── backend 敏感配置与运行时文件（严禁上传）──
+backend/.env
+backend/.env.*
+backend/node_modules/
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ── 小程序开发者私有配置（每人本地不同）──
+miniprogram/project.private.config.json
+
+# ── 通用系统/编辑器噪音 ──
+.DS_Store
+**/.DS_Store
+**/._*
+*.log
+.~*
+node_modules/

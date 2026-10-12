@@ -1,0 +1,50 @@
+<view class="container">
+  <!-- 顶部 -->
+  <view class="top-header">
+    <view class="icon icon-list icon-sm" style="color:var(--color-primary)"></view>
+    <text class="top-title">我的报名</text>
+  </view>
+
+  <!-- 未登录 -->
+  <view class="login-prompt" wx:if="{{!user && !loading}}">
+    <view class="icon icon-user icon-sm" style="color:var(--text-hint)"></view>
+    <text class="login-prompt-text">请先登录后查看报名记录</text>
+    <button class="login-btn" bindtap="goLogin">去登录</button>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:elif="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 报名列表 -->
+  <view class="list" wx:else>
+    <view class="app-card" wx:for="{{applications}}" wx:key="id">
+      <view class="app-top">
+        <text class="app-title">{{item.task_title || item.task_name || '未知任务'}}</text>
+        <view class="status-tag {{item.status}}">
+          {{item.status === 'pending' ? '待确认' : (item.status === 'confirmed' ? '已确认' : (item.status === 'attended' ? '已参加' : item.status))}}
+        </view>
+      </view>
+      <view class="app-info">
+        <text class="app-time"><view class="icon icon-clock icon-sm" style="color:var(--text-hint);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>{{item.start_time || item.task_start_time || '未知时间'}}</text>
+        <text class="app-location" wx:if="{{item.location || item.task_location}}">📍 {{item.location || item.task_location}}</text>
+      </view>
+      <view class="app-contact" wx:if="{{item.contact}}">
+        <text class="contact-label">联系方式：</text>
+        <text class="contact-value">{{item.contact}}</text>
+      </view>
+      <view class="app-bottom">
+        <text class="app-date">报名时间：{{item.created_at}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{applications.length === 0}}">
+      <view class="icon icon-inbox icon-sm" style="color:var(--text-hint)"></view>
+      <text class="empty-text">还没有报名记录</text>
+      <text class="empty-hint">去「志愿活动」看看有哪些任务吧</text>
+      <button class="go-btn" bindtap="goVolunteer">去查看志愿活动</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/forum/forum",
+    "pages/post/post",
+    "pages/profile/profile",
+    "pages/admin/admin",
+    "pages/about/about",
+    "pages/sale/sale",
+    "pages/sale-detail/sale-detail",
+    "pages/volunteer/volunteer",
+    "pages/volunteer-detail/volunteer-detail",
+    "pages/my-volunteer/my-volunteer",
+    "pages/post-detail/post-detail",
+    "pages/feedback/feedback"
+  ],
+  "window": {
+    "navigationBarTitleText": "公益社小猫",
+    "navigationBarBackgroundColor": "#FFF6E5",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFFBF0"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#E8885A",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "动态",
+        "iconPath": "images/tab/forum.png",
+        "selectedIconPath": "images/tab/forum_selected.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "猫猫图鉴",
+        "iconPath": "images/tab/index.png",
+        "selectedIconPath": "images/tab/index_selected.png"
+      },
+      {
+        "pagePath": "pages/sale/sale",
+        "text": "爱心义卖",
+        "iconPath": "images/tab/sale.png",
+        "selectedIconPath": "images/tab/sale_selected.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/profile.png",
+        "selectedIconPath": "images/tab/profile_selected.png"
+      },
+      {
+        "pagePath": "pages/about/about",
+        "text": "关于我们",
+        "iconPath": "images/tab/about.png",
+        "selectedIconPath": "images/tab/about_selected.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

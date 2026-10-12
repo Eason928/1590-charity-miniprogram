@@ -1,0 +1,340 @@
+.container {
+  padding-bottom: 40rpx;
+}
+
+/* ===== 轮播横幅 ===== */
+.banner {
+  width: 100%;
+  height: 340rpx;
+}
+
+.banner-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+}
+
+.banner-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24rpx 28rpx;
+  background: linear-gradient(transparent, rgba(0,0,0,0.5));
+}
+
+.banner-text {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.3);
+}
+
+/* ===== 快捷入口 ===== */
+.quick-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 24rpx 24rpx 10rpx;
+}
+
+.quick-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.quick-icon {
+  font-size: 36rpx;
+}
+
+.quick-label {
+  font-size: 28rpx;
+  color: #C67B4E;
+  font-weight: 600;
+}
+
+/* ===== 动态列表头部 ===== */
+.feed-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 24rpx 12rpx;
+}
+
+.feed-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.feed-btn {
+  font-size: 26rpx;
+  color: #E8885A;
+  padding: 8rpx 20rpx;
+  background: #FFF5ED;
+  border-radius: 30rpx;
+  font-weight: 500;
+}
+
+/* ===== 帖子列表 ===== */
+.post-list {
+  padding: 0 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.post-user {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.post-time {
+  font-size: 22rpx;
+  color: #bbb;
+  display: block;
+  margin-top: 8rpx;
+}
+
+.post-image {
+  width: 100%;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+/* 帖子标题 */
+.post-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+  line-height: 1.4;
+}
+
+/* 长方形布局：左文右图 */
+.post-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.post-col-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.post-thumb-single {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+/* 多图并排 */
+.post-grid-3 {
+  display: flex;
+  gap: 8rpx;
+  margin-top: 10rpx;
+}
+
+.post-thumb-grid {
+  flex: 1;
+  height: 220rpx;
+  border-radius: 10rpx;
+}
+
+/* 文字截断 */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 帖子标签 */
+.post-tags {
+  display: flex;
+  gap: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.post-tag {
+  font-size: 20rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  font-weight: 500;
+}
+
+.post-tag.spotlight {
+  background: #FFF8E1;
+  color: #F57F17;
+  border: 1rpx solid #FFE082;
+}
+
+.post-tag.pinned {
+  background: #E3F2FD;
+  color: #1565C0;
+  border: 1rpx solid #BBDEFB;
+}
+
+/* 帖子分类标签 */
+.post-tag.cat-cat {
+  background: #FFF0D6;
+  color: #E8885A;
+  border: 1rpx solid #FFE0B2;
+}
+.post-tag.cat-volunteer {
+  background: #E8F5E9;
+  color: #388E3C;
+  border: 1rpx solid #A5D6A7;
+}
+.post-tag.cat-announce {
+  background: #E3F2FD;
+  color: #1565C0;
+  border: 1rpx solid #90CAF9;
+}
+.post-tag.cat-dev {
+  background: #F3E5F5;
+  color: #7B1FA2;
+  border: 1rpx solid #CE93D8;
+}
+.post-tag.cat-daily {
+  background: #FFF8E1;
+  color: #F57F17;
+  border: 1rpx solid #FFE082;
+}
+
+/* 志愿活动卡片标签 */
+.volunteer-card-tag {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  margin-bottom: 10rpx;
+  background: #E8F5E9;
+  border: 1rpx solid #A5D6A7;
+  border-radius: 8rpx;
+  padding: 8rpx 14rpx;
+}
+.volunteer-tag-text {
+  font-size: 24rpx; color: var(--color-primary);
+}
+/* 卡片收支 */
+.card-finance {
+  display: flex; gap: 12rpx; margin: 6rpx 0;
+}
+.card-fin-income { font-size: 24rpx; font-weight: 600; color: #2E7D32; }
+.card-fin-expense { font-size: 24rpx; font-weight: 600; color: #C62828; }
+
+.post-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ===== 空状态 ===== */
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #999;
+  display: block;
+}
+
+.empty-sub {
+  font-size: 26rpx;
+  color: #ccc;
+  display: block;
+  margin-top: 12rpx;
+}
+
+/* ===== 加载中 ===== */
+.loading {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #999;
+}
+
+/* 帖子作者标签 */
+.post-user-tag {
+  font-size: 22rpx;
+  color: #E8885A;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+/* 作者行（昵称 + 权限标签） */
+.post-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 6rpx;
+}
+.post-author-row .post-user-tag {
+  margin-bottom: 0;
+}
+
+/* 权限标签 */
+.post-role-badge {
+  font-size: 18rpx;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  font-weight: 500;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+.post-role-badge.role-rongdada {
+  background: linear-gradient(135deg, #FFF8E1, #FFE082);
+  color: #F57F17;
+  border: 1rpx solid #FFB300;
+}
+.post-role-badge.role-developer {
+  background: #E8F5E9;
+  color: #388E3C;
+  border: 1rpx solid #A5D6A7;
+}
+/* 称号标签（帖子卡片） */
+.post-title-badge {
+  font-size: 18rpx; padding: 2rpx 10rpx; border-radius: 6rpx;
+  background: #f5f5f5; color: #888;
+  border: 1rpx solid #ddd; font-weight: 500;
+  flex-shrink: 0; line-height: 1.4;
+}

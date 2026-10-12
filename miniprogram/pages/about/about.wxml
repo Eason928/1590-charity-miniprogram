@@ -1,0 +1,83 @@
+<view class="container">
+
+  <!-- 顶部 Logo -->
+  <view class="logo-area">
+    <image src="/images/logo/club-logo.png" mode="widthFix" class="logo-image" />
+  </view>
+
+  <!-- 卡片1: 关于1590公益社 -->
+  <view class="card" data-expanded="{{expanded.about}}" bindtap="toggleSection" data-section="about">
+    <view class="card-header">
+      <view class="card-title"><view class="icon icon-flag icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>关于1590公益社</view>
+      <text class="card-arrow {{expanded.about ? 'arrow-up' : 'arrow-down'}}">▾</text>
+    </view>
+    <view class="card-body {{expanded.about ? 'body-show' : 'body-hide'}}">
+      <text class="placeholder-text">内容整理中......</text>
+    </view>
+  </view>
+
+  <!-- 卡片2: 历史沿革 -->
+  <view class="card" data-expanded="{{expanded.history}}" bindtap="toggleSection" data-section="history">
+    <view class="card-header">
+      <view class="card-title"><view class="icon icon-clock icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>历史沿革</view>
+      <text class="card-arrow {{expanded.history ? 'arrow-up' : 'arrow-down'}}">▾</text>
+    </view>
+    <view class="card-body {{expanded.history ? 'body-show' : 'body-hide'}}">
+      <text class="placeholder-text">内容整理中......</text>
+    </view>
+  </view>
+
+  <!-- 卡片3: 项目介绍 -->
+  <view class="card" data-expanded="{{expanded.projects}}" bindtap="toggleSection" data-section="projects">
+    <view class="card-header">
+      <view class="card-title"><view class="icon icon-list icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>项目介绍</view>
+      <text class="card-arrow {{expanded.projects ? 'arrow-up' : 'arrow-down'}}">▾</text>
+    </view>
+    <view class="card-body {{expanded.projects ? 'body-show' : 'body-hide'}}">
+      <view class="sub-item">
+        <view class="icon icon-cat icon-sm" style="color:var(--color-accent)"></view>
+        <text class="sub-item-text">猫猫救助计划 —— 内容整理中......</text>
+      </view>
+      <view class="sub-item">
+        <view class="icon icon-bag icon-sm" style="color:var(--color-primary)"></view>
+        <text class="sub-item-text">校园义卖 —— 内容整理中......</text>
+      </view>
+      <view class="sub-item">
+        <view class="icon icon-pin icon-sm" style="color:var(--color-accent)"></view>
+        <text class="sub-item-text">更多项目 —— 内容整理中......</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 卡片4: 如何帮助它们 -->
+  <view class="card" data-expanded="{{expanded.help}}" bindtap="toggleSection" data-section="help">
+    <view class="card-header">
+      <view class="card-title"><view class="icon icon-heart icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>如何帮助它们</view>
+      <text class="card-arrow {{expanded.help ? 'arrow-up' : 'arrow-down'}}">▾</text>
+    </view>
+    <view class="card-body {{expanded.help ? 'body-show' : 'body-hide'}}">
+      <view class="help-item"><view class="icon icon-box icon-sm" style="color:var(--color-accent)"></view><text class="help-text">合理投喂猫粮和清水</text></view>
+      <view class="help-item"><view class="icon icon-plus icon-sm" style="color:var(--color-accent)"></view><text class="help-text">发现受伤猫咪及时联系救助</text></view>
+      <view class="help-item"><view class="icon icon-home icon-sm" style="color:var(--color-accent)"></view><text class="help-text">有条件的话考虑领养</text></view>
+      <view class="help-item"><text class="help-icon">✂️</text><text class="help-text">支持TNR（捕捉-绝育-放归）</text></view>
+    </view>
+  </view>
+
+  <!-- 卡片5: 联系我们 -->
+  <view class="card" data-expanded="{{expanded.contact}}" bindtap="toggleSection" data-section="contact">
+    <view class="card-header">
+      <text class="card-title">📞 联系我们</text>
+      <text class="card-arrow {{expanded.contact ? 'arrow-up' : 'arrow-down'}}">▾</text>
+    </view>
+    <view class="card-body {{expanded.contact ? 'body-show' : 'body-hide'}}">
+      <text class="placeholder-text">内容整理中......</text>
+    </view>
+  </view>
+
+  <!-- 底部 -->
+  <view class="footer">
+    <text class="footer-text">公益社小猫 · 用爱记录每一只喵</text>
+    <text class="footer-dev">开发者：Eason Yuan  ·内测  v1.0.0</text>
+  </view>
+
+</view>

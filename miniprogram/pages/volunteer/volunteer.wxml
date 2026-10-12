@@ -1,0 +1,57 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <view class="icon icon-heart icon-sm" style="color:var(--color-primary)"></view>
+    <text class="header-title">志愿活动</text>
+    <text class="header-sub">用爱心为校园猫咪贡献力量</text>
+  </view>
+
+  <!-- 我的报名记录按钮（已登录时显示） -->
+  <view class="my-vol-btn" wx:if="{{hasLogin}}" bindtap="goMyVolunteer">
+    <view class="icon icon-list icon-sm" style="color:var(--color-primary)"></view>
+    <text class="my-vol-text">我的报名记录</text>
+    <text class="my-vol-badge" wx:if="{{appliedTaskIds.length > 0}}">{{appliedTaskIds.length}}</text>
+    <text class="my-vol-arrow">›</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-list" wx:else>
+    <view class="task-card" wx:for="{{tasks}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="task-top">
+        <view class="task-title-row">
+          <text class="task-title">{{item.title}}</text>
+          <text class="applied-badge" wx:if="{{item.applied}}">已报名</text>
+        </view>
+        <view class="task-quota {{item.slots_filled >= item.slots_needed ? 'full' : ''}}">
+          <text class="quota-text">{{item.slots_filled}}/{{item.slots_needed}}</text>
+          <text class="quota-label">{{item.slots_filled >= item.slots_needed ? '已满' : '报名中'}}</text>
+        </view>
+      </view>
+      <view class="task-meta">
+        <view class="meta-item">
+          <view class="icon icon-clock icon-sm" style="color:var(--text-hint);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>
+          <text class="meta-text">{{item.date_time}}</text>
+        </view>
+        <view class="meta-item">
+          <view class="icon icon-location icon-sm" style="color:var(--text-hint);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>
+          <text class="meta-text">{{item.location}}</text>
+        </view>
+      </view>
+      <view class="task-brief" wx:if="{{item.description}}">
+        <text class="brief-text">{{item.description.length > 80 ? item.description.slice(0, 80) + '...' : item.description}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{tasks.length === 0 && !loading}}">
+      <view class="icon icon-inbox icon-sm" style="color:var(--text-hint)"></view>
+      <text class="empty-text">暂无招募中的志愿任务</text>
+      <text class="empty-hint">请稍后再来看看吧</text>
+    </view>
+  </view>
+</view>

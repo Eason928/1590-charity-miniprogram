@@ -1,0 +1,61 @@
+/* ===== 公益社小猫小程序 — 设计系统 ===== */
+
+:root {
+  /* ===== 品牌色 ===== */
+  --color-primary:       #1A73E8;
+  --color-primary-dark:  #1557B0;
+  --color-primary-light: #E8F0FE;
+
+  --color-accent:       #E8885A;
+  --color-accent-dark:  #D4733E;
+  --color-accent-light: #FFF0D6;
+
+  --color-success:       #34A853;
+  --color-success-bg:   #E8F5E9;
+  --color-danger:        #D32F2F;
+  --color-danger-bg:    #FFEBEE;
+  --color-warning:       #F57F17;
+  --color-warning-bg:   #FFF8E1;
+
+  /* ===== 中性色 ===== */
+  --text-primary:   #1A1A2E;
+  --text-secondary: #555770;
+  --text-tertiary:  #8E90A6;
+  --text-hint:      #B8BACC;
+  --text-disabled:  #CCC;
+
+  --bg-page:      #F5F7FA;
+  --bg-card:      #FFFFFF;
+  --bg-input:     #F2F3F7;
+  --bg-hover:     #F8F9FB;
+  --border-color: #EBEEF2;
+
+  /* ===== 圆角 ===== */
+  --radius-sm:   8rpx;
+  --radius-md:  12rpx;
+  --radius-lg:  16rpx;
+  --radius-xl:  24rpx;
+
+  /* ===== 阴影 ===== */
+  --shadow-sm: 0 1rpx 4rpx rgba(0,0,0,0.04);
+  --shadow-md: 0 2rpx 12rpx rgba(0,0,0,0.06);
+  --shadow-lg: 0 4rpx 24rpx rgba(0,0,0,0.08);
+
+  /* ===== 间距 ===== */
+  --space-xs:  4rpx;
+  --space-sm:  8rpx;
+  --space-md: 12rpx;
+  --space-lg: 16rpx;
+  --space-xl: 20rpx;
+  --space-2xl: 24rpx;
+  --space-3xl: 32rpx;
+
+  /* ===== 字号 ===== */
+  --text-xs:   20rpx;
+  --text-sm:   22rpx;
+  --text-base: 26rpx;
+  --text-md:   28rpx;
+  --text-lg:   32rpx;
+  --text-xl:   36rpx;
+  --text-2xl:  44rpx;
+}

@@ -1,0 +1,109 @@
+<view class="container">
+  <!-- 顶部轮播横幅（社团宣传 + 动态顶部帖子） -->
+  <swiper class="banner" indicator-dots="{{true}}" autoplay="{{true}}" interval="4000" circular="{{true}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#E8885A">
+    <swiper-item wx:for="{{bannerImages}}" wx:key="id" bindtap="onBannerTap" data-id="{{item.postId}}" data-spotlight="{{item.isSpotlight}}" data-volunteertaskid="{{item.volunteerTaskId}}">
+      <view class="banner-slide">
+        <image src="{{item.image}}" mode="aspectFill" class="banner-img" />
+        <view class="banner-overlay">
+          <text class="banner-text">{{item.text}}</text>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 快捷入口按钮 -->
+  <view class="quick-actions">
+    <view class="quick-btn" bindtap="goVolunteer">
+      <view class="icon icon-heart icon-sm" style="color:var(--color-accent)"></view>
+      <text class="quick-label">志愿活动</text>
+    </view>
+    <view class="quick-btn" bindtap="goSale">
+      <view class="icon icon-bag icon-sm" style="color:var(--color-primary)"></view>
+      <text class="quick-label">爱心义卖</text>
+    </view>
+  </view>
+
+  <!-- 最新动态标题 -->
+  <view class="feed-header">
+    <view class="feed-title"><view class="icon icon-message icon-sm" style="color:var(--text-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>最新动态</view>
+    <view class="feed-btn" wx:if="{{user}}" bindtap="goPost"><view class="icon icon-plus icon-sm" style="color:var(--color-primary);margin-right:4rpx;display:inline-block;vertical-align:middle"></view>发帖</view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list">
+    <view class="post-card" wx:for="{{posts}}" wx:key="id" bindtap="goPostDetail" data-id="{{item.id}}">
+    <view class="post-tags" wx:if="{{item.is_pinned || item.category}}">
+      <view class="post-tag pinned" wx:if="{{item.is_pinned}}"><view class="icon icon-pin icon-sm" style="margin-right:4rpx;display:inline-block;vertical-align:middle"></view>置顶</view>
+      <text class="post-tag cat-cat" wx:if="{{item.category === '猫猫帖'}}">猫猫帖</text>
+      <text class="post-tag cat-volunteer" wx:if="{{item.category === '活动记录帖'}}">活动记录帖</text>
+      <text class="post-tag cat-announce" wx:if="{{item.category === '公告帖子'}}">公告</text>
+      <text class="post-tag cat-dev" wx:if="{{item.category === '开发者公告'}}">开发者公告</text>
+      <text class="post-tag cat-daily" wx:if="{{item.category === '日常分享帖'}}">分享</text>
+    </view>
+    <view class="volunteer-card-tag" wx:if="{{item.volunteer_task_id}}">
+      <view class="icon icon-heart icon-sm" style="color:var(--color-primary)"></view>
+      <text class="volunteer-tag-text">志愿活动 · 点击查看详情报名</text>
+    </view>
+    <!-- 活动记录帖：简单收支展示 -->
+    <view class="card-finance" wx:if="{{item.category === '活动记录帖' && (item.income_amount > 0 || item.expense_amount > 0)}}">
+      <text class="card-fin-income" wx:if="{{item.income_amount > 0}}">+¥{{item.income_amount}}</text>
+      <text class="card-fin-expense" wx:if="{{item.expense_amount > 0}}">-¥{{item.expense_amount}}</text>
+    </view>
+
+    <!-- 1-2 张图：左标题右图 -->
+    <view class="post-row" wx:if="{{item.images && item.images.length > 0 && item.images.length < 3}}">
+      <view class="post-col-text">
+        <view class="post-author-row">
+          <text class="post-user-tag">{{item.nickname}}</text>
+          <text class="post-role-badge role-{{item.role}}" wx:if="{{item.role === 'rongdada' || item.role === 'developer'}}">{{item.role === 'developer' ? '开发者' : '荣大大'}}</text>
+          <text class="post-title-badge" wx:if="{{item.title}}">{{item.title}}</text>
+        </view>
+        <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="post-text line-clamp-3">{{item.text}}</text>
+        <text class="post-time">{{item.created_at.slice(0,10)}}</text>
+      </view>
+      <image class="post-thumb-single" src="{{item.images[0]}}" mode="aspectFill" />
+    </view>
+
+    <!-- 无图：纯文字 -->
+    <view class="post-col-text" wx:elif="{{!item.images || item.images.length === 0}}">
+      <view class="post-author-row">
+        <text class="post-user-tag">{{item.nickname}}</text>
+        <text class="post-role-badge role-{{item.role}}" wx:if="{{item.role === 'rongdada' || item.role === 'developer'}}">{{item.role === 'developer' ? '开发者' : '荣大大'}}</text>
+        <text class="post-title-badge" wx:if="{{item.title}}">{{item.title}}</text>
+      </view>
+      <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+      <text class="post-text">{{item.text}}</text>
+      <text class="post-time">{{item.created_at.slice(0,10)}}</text>
+    </view>
+
+    <!-- 3+ 张图：左上方标题，3张图并排 -->
+    <view wx:elif="{{item.images.length >= 3}}">
+      <view class="post-author-row">
+        <text class="post-user-tag">{{item.nickname}}</text>
+        <text class="post-role-badge role-{{item.role}}" wx:if="{{item.role === 'rongdada' || item.role === 'developer'}}">{{item.role === 'developer' ? '开发者' : '荣大大'}}</text>
+        <text class="post-title-badge" wx:if="{{item.title}}">{{item.title}}</text>
+      </view>
+      <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+      <text class="post-text line-clamp-2">{{item.text}}</text>
+      <view class="post-grid-3">
+        <image class="post-thumb-grid" src="{{item.images[0]}}" mode="aspectFill" />
+        <image class="post-thumb-grid" src="{{item.images[1]}}" mode="aspectFill" />
+        <image class="post-thumb-grid" src="{{item.images[2]}}" mode="aspectFill" />
+      </view>
+      <text class="post-time">{{item.created_at.slice(0,10)}}</text>
+    </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{posts.length === 0 && spotlightPosts.length === 0 && !loading}}">
+    <view class="empty-text"><view class="icon icon-message icon-sm" style="color:var(--text-hint);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>还没有帖子</view>
+    <text class="empty-sub">成为第一个分享的人吧</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

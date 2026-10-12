@@ -1,0 +1,235 @@
+<view class="container">
+  <!-- 未登录：微信一键登录（主入口） -->
+  <view class="login-card" wx:if="{{!user && !showPwdLogin && !showStudentVerify && !showResetPwd}}">
+    <image src="/images/logo/club-logo.png" mode="widthFix" class="login-logo" />
+    <text class="login-title">登录 1590 公益社</text>
+
+    <button class="wx-login-btn" bindtap="doWxLogin">
+      <view class="icon icon-message icon-white icon-sm"></view>
+      <text class="wx-text">微信一键登录</text>
+    </button>
+
+    <text class="pwd-login-link" bindtap="togglePwdLogin">账号密码登录（开发者/管理员）</text>
+  </view>
+
+  <!-- 学号验证（首次微信登录） -->
+  <view class="login-card" wx:elif="{{!user && showStudentVerify}}">
+    <text class="pwd-back-btn" bindtap="cancelVerify">← 返回</text>
+    <image src="/images/logo/club-logo.png" mode="widthFix" class="login-logo" />
+    <text class="login-title">验证身份</text>
+    <text class="login-desc">请输入你的学号和初始密码进行身份验证</text>
+
+    <input class="login-input" placeholder="学号" value="{{verifyStudentId}}" bindinput="onVerifyStudentId" />
+    <input class="login-input" placeholder="初始密码" password="{{!showPwd}}" value="{{verifyPassword}}" bindinput="onVerifyPassword" />
+
+    <button class="login-btn" bindtap="doStudentVerify">验证身份</button>
+  </view>
+
+  <!-- 强制设置新密码（首次登录） -->
+  <view class="login-card" wx:elif="{{!user && showResetPwd}}">
+    <text class="pwd-back-btn" bindtap="cancelResetPwd">← 返回</text>
+    <image src="/images/logo/club-logo.png" mode="widthFix" class="login-logo" />
+    <text class="login-title">设置新密码</text>
+    <text class="login-desc">首次登录，请设置你的新密码（至少6位）</text>
+
+    <input class="login-input" placeholder="新密码" password="{{!resetShow}}" value="{{resetPwd}}" bindinput="onResetPwd" />
+    <view class="pwd-toggle-wrap" bindtap="toggleResetPwd">
+      <text>{{resetShow ? '隐藏' : '显示'}}密码</text>
+    </view>
+    <input class="login-input" placeholder="确认新密码" password="{{!resetShow}}" value="{{resetConfirmPwd}}" bindinput="onResetConfirmPwd" />
+
+    <button class="login-btn" bindtap="doResetPassword">设置密码</button>
+  </view>
+
+  <!-- 账号密码登录（隐藏，仅管理员/开发者使用） -->
+  <view class="login-card" wx:elif="{{!user && showPwdLogin}}">
+    <text class="pwd-back-btn" bindtap="togglePwdLogin">← 返回微信登录</text>
+    <image src="/images/logo/club-logo.png" mode="widthFix" class="login-logo" />
+    <text class="login-title">账号密码登录</text>
+
+    <input class="login-input" placeholder="用户名" value="{{loginUsername}}" bindinput="onLoginUsername" />
+    <input class="login-input" placeholder="密码" password="{{!showPwd}}" value="{{loginPassword}}" bindinput="onLoginPassword" />
+    <view class="pwd-toggle-wrap" bindtap="toggleLoginPwd">
+      <text>{{showPwd ? '隐藏' : '显示'}}</text>
+    </view>
+
+    <button class="login-btn" bindtap="doLogin">登录</button>
+
+    <!-- 学生快捷登录（测试用） -->
+    <view class="student-quick-login">
+      <text class="student-quick-divider">—— 学生快捷登录（测试用） ——</text>
+      <input class="login-input" placeholder="学号" value="{{quickStudentId}}" bindinput="onQuickStudentId" />
+      <input class="login-input" placeholder="密码" password="{{!quickShowPwd}}" value="{{quickStudentPwd}}" bindinput="onQuickStudentPwd" />
+      <view class="pwd-toggle-wrap" bindtap="toggleQuickPwd">
+        <text>{{quickShowPwd ? '隐藏' : '显示'}}</text>
+      </view>
+      <button class="login-btn quick-btn" bindtap="doStudentDirectLogin">学生账号登录</button>
+    </view>
+  </view>
+
+  <!-- 已登录 -->
+  <view wx:else>
+    <!-- 用户信息卡 -->
+    <view class="user-card">
+      <view class="user-avatar">{{user.nickname[0]}}</view>
+      <view class="user-meta">
+      <view class="user-name-row">
+        <text class="user-name">{{user.nickname}}</text>
+        <text class="role-tag {{user.role === 'admin' ? 'admin' : (user.role === 'developer' ? 'developer' : (user.role === 'rongdada' ? 'rongdada' : 'student'))}}">{{user.role === 'admin' ? '管理员' : (user.role === 'developer' ? '开发者' : (user.role === 'rongdada' ? '荣大大' : '学生'))}}</text>
+        <text class="title-tag" wx:if="{{user.title}}">{{user.title}}</text>
+      </view>
+      </view>
+    </view>
+
+    <!-- 统计数据 -->
+    <view class="stats-row">
+      <view class="stat-item"><text class="stat-num">{{stats.total}}</text><text class="stat-label">全部帖子</text></view>
+      <view class="stat-item"><text class="stat-num green">{{stats.approved}}</text><text class="stat-label">已通过</text></view>
+      <view class="stat-item"><text class="stat-num orange">{{stats.pending}}</text><text class="stat-label">待审核</text></view>
+      <view class="stat-item"><text class="stat-num red">{{stats.rejected}}</text><text class="stat-label">被拒</text></view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-row">
+      <view class="action-btn" bindtap="goFeedback"><view class="icon icon-message icon-sm" style="color:var(--color-primary)"></view>意见反馈</view>
+      <view class="action-btn" wx:if="{{user.role !== 'admin' && user.role !== 'developer' && user.role !== 'rongdada'}}" bindtap="applyAdmin"><view class="icon icon-crown icon-sm" style="color:var(--color-primary)"></view>申请管理员</view>
+      <view class="action-btn logout" bindtap="doLogout"><view class="icon icon-logout icon-sm" style="color:var(--color-danger)"></view>退出登录</view>
+    </view>
+
+    <!-- 待处理事项（简化版） -->
+    <view class="pending-section" wx:if="{{user.role === 'admin' || user.role === 'developer' || user.role === 'rongdada'}}">
+      <view class="pending-header">
+        <view class="pending-title"><view class="icon icon-list icon-sm" style="color:var(--color-primary);margin-right:8rpx"></view>待处理</view>
+        <text class="pending-count-badge" wx:if="{{pendingTotal > 0}}">{{pendingTotal}}</text>
+        <text class="pending-count-badge none" wx:else>0</text>
+      </view>
+      <view class="pending-items" wx:if="{{pendingTotal > 0}}">
+        <view class="pending-item" wx:if="{{pending.pendingPosts > 0}}" bindtap="goAdmin" data-tab="posts">
+          <text class="pending-text">帖子待审核 · {{pending.pendingPosts}}</text>
+        </view>
+        <view class="pending-item" wx:if="{{user.role !== 'admin' && pending.adminApplications > 0}}" bindtap="goAdmin" data-tab="users">
+          <text class="pending-text">管理员申请 · {{pending.adminApplications}}</text>
+        </view>
+        <view class="pending-item" wx:if="{{user.role !== 'admin' && pending.pendingUsers > 0}}" bindtap="goAdmin" data-tab="users">
+          <text class="pending-text">用户待审核 · {{pending.pendingUsers}}</text>
+        </view>
+        <view class="pending-item" wx:if="{{user.role !== 'admin' && pending.pendingVolunteerApps > 0}}" bindtap="goAdmin" data-tab="volunteerMgmt">
+          <text class="pending-text">志愿报名待确认 · {{pending.pendingVolunteerApps}}</text>
+        </view>
+      </view>
+      <view class="pending-empty" wx:else>
+        <text>没有待处理事项</text>
+      </view>
+    </view>
+
+    <!-- 管理后台功能列表（网格布局） -->
+    <view class="admin-menu" wx:if="{{user.role === 'admin' || user.role === 'developer' || user.role === 'rongdada'}}">
+      <view class="admin-menu-header">
+        <view class="admin-menu-title"><view class="icon icon-settings icon-sm" style="color:var(--color-primary);margin-right:8rpx"></view>管理后台</view>
+      </view>
+      <view class="menu-grid">
+        <view class="menu-grid-item" bindtap="goAdmin" data-tab="posts"><view class="icon icon-message menu-grid-icon"></view><text class="menu-grid-label">帖子管理</text></view>
+        <view class="menu-grid-item" bindtap="goAdmin" data-tab="catmgmt"><view class="icon icon-cat menu-grid-icon"></view><text class="menu-grid-label">猫咪管理</text></view>
+        <view class="menu-grid-item" wx:if="{{user.role !== 'admin'}}" bindtap="goAdmin" data-tab="users"><view class="icon icon-users menu-grid-icon"></view><text class="menu-grid-label">用户管理</text></view>
+        <view class="menu-grid-item" wx:if="{{user.role !== 'admin'}}" bindtap="goAdmin" data-tab="volunteerMgmt"><view class="icon icon-heart menu-grid-icon"></view><text class="menu-grid-label">志愿管理</text></view>
+        <view class="menu-grid-item" wx:if="{{user.role === 'developer' || user.role === 'rongdada'}}" bindtap="goAdmin" data-tab="products"><view class="icon icon-bag menu-grid-icon"></view><text class="menu-grid-label">义卖管理</text></view>
+        <view class="menu-grid-item" wx:if="{{user.role === 'developer' || user.role === 'rongdada'}}" bindtap="goAdmin" data-tab="students"><view class="icon icon-graduate menu-grid-icon"></view><text class="menu-grid-label">学生管理</text></view>
+      </view>
+    </view>
+
+    <!-- 帖子列表（可折叠） -->
+    <view class="collapse-header" bindtap="togglePosts">
+      <text class="section-title">我的帖子（{{posts.length}}）</text>
+      <text class="collapse-arrow">{{postsCollapsed ? '展开 ▼' : '收起 ▲'}}</text>
+    </view>
+
+    <!-- 帖子列表（可折叠） -->
+    <view wx:if="{{!postsCollapsed}}">
+      <view class="post-card" wx:for="{{posts}}" wx:key="id">
+      <view class="post-status-bar">
+        <view class="post-cat" wx:if="{{item.cat_name}}"><view class="icon icon-cat icon-sm" style="color:var(--color-accent);margin-right:4rpx"></view>{{item.cat_name}}</view>
+        <text class="post-status status-{{item.status}}">{{item.status === 'approved' ? '已通过' : (item.status === 'pending' ? '待审核' : '已拒绝')}}</text>
+      </view>
+
+      <!-- 1-2 张图：左文右图 -->
+      <view class="my-post-row" wx:if="{{item.images && item.images.length > 0 && item.images.length < 3}}">
+        <view class="my-post-col">
+          <text class="my-post-title" wx:if="{{item.title}}">{{item.title}}</text>
+          <text class="my-post-text line-clamp-3">{{item.text}}</text>
+          <text class="my-post-time">{{item.created_at.slice(0,10)}}</text>
+        </view>
+        <image class="my-post-thumb" src="{{item.images[0]}}" mode="aspectFill" />
+      </view>
+
+      <!-- 无图 -->
+      <view class="my-post-col" wx:elif="{{!item.images || item.images.length === 0}}">
+        <text class="my-post-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="my-post-text">{{item.text}}</text>
+        <text class="my-post-time">{{item.created_at.slice(0,10)}}</text>
+      </view>
+
+      <!-- 3+ 张图 -->
+      <view wx:elif="{{item.images.length >= 3}}">
+        <text class="my-post-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="my-post-text line-clamp-2">{{item.text}}</text>
+        <view class="my-post-grid">
+          <image class="my-post-grid-img" src="{{item.images[0]}}" mode="aspectFill" />
+          <image class="my-post-grid-img" src="{{item.images[1]}}" mode="aspectFill" />
+          <image class="my-post-grid-img" src="{{item.images[2]}}" mode="aspectFill" />
+        </view>
+        <text class="my-post-time">{{item.created_at.slice(0,10)}}</text>
+      </view>
+      <!-- 操作按钮 -->
+      <view class="my-post-actions">
+        <view class="my-post-edit" wx:if="{{user.role === 'rongdada' || user.role === 'developer'}}" bindtap="editPost" data-id="{{item.id}}"><view class="icon icon-edit icon-sm" style="color:var(--color-primary)"></view>编辑</view>
+        <view class="my-post-del" bindtap="deletePost" data-id="{{item.id}}"><view class="icon icon-trash icon-sm" style="color:var(--color-danger)"></view>删除</view>
+      </view>
+      </view>
+      <view class="empty" wx:if="{{posts.length === 0}}"><text class="empty-text">还没有发过帖子</text></view>
+    </view>
+  </view>
+
+  <!-- 编辑弹窗 -->
+  <view class="edit-overlay" wx:if="{{showEditModal}}" bindtap="closeEdit">
+    <view class="edit-modal" catchtap="preventClose">
+      <view class="edit-modal-title"><view class="icon icon-edit icon-sm" style="color:var(--text-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>编辑帖子</view>
+
+      <view class="edit-field">
+        <text class="edit-label">标题</text>
+        <input class="edit-input" value="{{editForm.title}}" bindinput="onEditInput" data-field="title" placeholder="帖子标题" />
+      </view>
+
+      <view class="edit-field">
+        <text class="edit-label">内容</text>
+        <textarea class="edit-textarea" value="{{editForm.text}}" bindinput="onEditInput" data-field="text" placeholder="帖子内容" />
+      </view>
+
+      <view class="edit-field edit-switch-row">
+        <view class="edit-label"><view class="icon icon-star icon-sm" style="color:var(--color-accent);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>轮播横幅显示</view>
+        <switch checked="{{editForm.is_spotlight}}" bindchange="onEditSwitch" data-field="is_spotlight" color="#E8885A" />
+      </view>
+
+      <view class="edit-field edit-switch-row">
+        <view class="edit-label"><view class="icon icon-pin icon-sm" style="color:var(--color-primary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>置顶</view>
+        <switch checked="{{editForm.is_pinned}}" bindchange="onEditSwitch" data-field="is_pinned" color="#1A73E8" />
+      </view>
+
+      <view class="edit-field edit-switch-row" wx:if="{{editForm.is_pinned}}">
+        <view class="edit-label"><view class="icon icon-clock icon-sm" style="color:var(--text-tertiary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>截止时间</view>
+        <view class="edit-pin-row">
+          <picker mode="date" value="{{editForm.pinDate}}" bindchange="onEditPinDateChange">
+            <view class="edit-pin-picker">{{editForm.pinDate || '选择日期'}}</view>
+          </picker>
+          <picker mode="time" value="{{editForm.pinTime}}" bindchange="onEditPinTimeChange">
+            <view class="edit-pin-picker">{{editForm.pinTime || '时间'}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="edit-btns">
+        <button class="edit-save-btn" bindtap="saveEdit">保存修改</button>
+        <button class="edit-cancel-btn" bindtap="closeEdit">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

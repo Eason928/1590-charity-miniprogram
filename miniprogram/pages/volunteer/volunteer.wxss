@@ -1,0 +1,130 @@
+page { background: #FFFBF0; }
+.container { padding: 0 24rpx 40rpx; min-height: 100vh; }
+
+/* 头部 */
+.header {
+  text-align: center;
+  padding: 40rpx 0 30rpx;
+}
+.header-icon { font-size: 72rpx; display: block; margin-bottom: 12rpx; }
+.header-title {
+  font-size: 38rpx; font-weight: bold; color: #C67B4E;
+  display: block; margin-bottom: 8rpx;
+}
+.header-sub {
+  font-size: 26rpx; color: #999;
+  display: block;
+}
+
+/* 加载 */
+.loading { text-align: center; padding: 120rpx 0; }
+.loading-text { font-size: 28rpx; color: #bbb; }
+
+/* 任务卡片 */
+.task-list { padding-bottom: 20rpx; }
+.task-card {
+  background: #fff; border-radius: 24rpx; padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.task-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18rpx;
+}
+.task-title {
+  font-size: 32rpx; font-weight: bold; color: #333;
+  line-height: 1.4;
+}
+.task-quota {
+  flex-shrink: 0;
+  text-align: center;
+  background: #FFF5ED;
+  border-radius: 12rpx;
+  padding: 8rpx 16rpx;
+  min-width: 100rpx;
+}
+.task-quota.full { background: #F5F5F5; }
+.quota-text {
+  font-size: 28rpx; font-weight: bold; color: #E8885A;
+  display: block;
+}
+.task-quota.full .quota-text { color: #bbb; }
+.quota-label {
+  font-size: 20rpx; color: #E8885A;
+  display: block; margin-top: 2rpx;
+}
+.task-quota.full .quota-label { color: #ccc; }
+
+/* 元信息 */
+.task-meta { margin-bottom: 14rpx; }
+.meta-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+.meta-icon { font-size: 26rpx; margin-right: 8rpx; flex-shrink: 0; }
+.meta-text { font-size: 26rpx; color: #666; }
+
+/* 简介 */
+.task-brief { margin-top: 6rpx; }
+.brief-text { font-size: 26rpx; color: #999; line-height: 1.5; }
+
+/* 空状态 */
+.empty {
+  text-align: center;
+  padding: 120rpx 0;
+}
+.empty-icon { font-size: 80rpx; display: block; margin-bottom: 16rpx; }
+.empty-text { font-size: 30rpx; color: #999; display: block; margin-bottom: 8rpx; }
+.empty-hint { font-size: 26rpx; color: #ccc; display: block; }
+
+/* 底部链接 */
+.footer-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28rpx;
+  margin-top: 10rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.footer-link-icon { font-size: 32rpx; margin-right: 10rpx; }
+.footer-link-text { font-size: 28rpx; color: #E8885A; font-weight: 500; }
+.footer-link-arrow { font-size: 36rpx; color: #E8885A; margin-left: 8rpx; }
+
+/* 我的报名记录按钮 */
+.my-vol-btn {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+  border: 2rpx solid #F0E0D0;
+}
+.my-vol-icon { font-size: 36rpx; margin-right: 12rpx; }
+.my-vol-text { font-size: 30rpx; color: #C67B4E; font-weight: bold; flex: 1; }
+.my-vol-badge {
+  background: #E8885A; color: #fff; font-size: 22rpx;
+  border-radius: 30rpx; padding: 4rpx 16rpx; margin-right: 8rpx;
+  min-width: 32rpx; text-align: center;
+}
+.my-vol-arrow { font-size: 40rpx; color: #C67B4E; }
+
+/* 已报名标签 */
+.task-title-row {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-right: 16rpx;
+}
+.applied-badge {
+  font-size: 22rpx; color: #fff; background: #52C41A;
+  border-radius: 8rpx; padding: 4rpx 12rpx;
+  margin-left: 10rpx; flex-shrink: 0;
+  font-weight: 500;
+}

@@ -1,0 +1,112 @@
+/* 全局样式 */
+@import "./styles/icons.wxss";
+
+/* CSS 变量定义（微信 wxss 的 @import 不跨文件传递变量，所以直接写在这里） */
+page {
+  --color-primary:       #1A73E8;
+  --color-primary-dark:  #1557B0;
+  --color-primary-light: #E8F0FE;
+
+  --color-accent:       #E8885A;
+  --color-accent-dark:  #D4733E;
+  --color-accent-light: #FFF0D6;
+
+  --color-success:       #34A853;
+  --color-success-bg:   #E8F5E9;
+  --color-danger:        #D32F2F;
+  --color-danger-bg:    #FFEBEE;
+  --color-warning:       #F57F17;
+  --color-warning-bg:   #FFF8E1;
+
+  --text-primary:   #1A1A2E;
+  --text-secondary: #555770;
+  --text-tertiary:  #8E90A6;
+  --text-hint:      #B8BACC;
+  --text-disabled:  #CCC;
+
+  --bg-page:      #F5F7FA;
+  --bg-card:      #FFFFFF;
+  --bg-input:     #F2F3F7;
+  --bg-hover:     #F8F9FB;
+  --border-color: #EBEEF2;
+
+  --radius-sm:   8rpx;
+  --radius-md:  12rpx;
+  --radius-lg:  16rpx;
+  --radius-xl:  24rpx;
+
+  --shadow-sm: 0 1rpx 4rpx rgba(0,0,0,0.04);
+  --shadow-md: 0 2rpx 12rpx rgba(0,0,0,0.06);
+  --shadow-lg: 0 4rpx 24rpx rgba(0,0,0,0.08);
+
+  --space-xs:  4rpx;
+  --space-sm:  8rpx;
+  --space-md: 12rpx;
+  --space-lg: 16rpx;
+  --space-xl: 20rpx;
+  --space-2xl: 24rpx;
+  --space-3xl: 32rpx;
+
+  --text-xs:   20rpx;
+  --text-sm:   22rpx;
+  --text-base: 26rpx;
+  --text-md:   28rpx;
+  --text-lg:   32rpx;
+  --text-xl:   36rpx;
+  --text-2xl:  44rpx;
+
+  background-color: var(--bg-page);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+
+/* 全局通用类 */
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.card + .card {
+  margin-top: var(--space-md);
+}
+
+.section-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: var(--space-2xl) var(--space-2xl) var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80rpx 0;
+  color: var(--text-hint);
+  font-size: var(--text-md);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: var(--text-md);
+  text-align: center;
+  border: none;
+}
+.btn-primary::after { border: none; }
+
+.badge {
+  display: inline-block;
+  white-space: nowrap;
+  font-size: var(--text-sm);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  line-height: 1.4;
+}

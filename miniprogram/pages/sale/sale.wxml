@@ -1,0 +1,57 @@
+<view class="container">
+  <!-- 顶部轮播/推荐区 -->
+  <swiper class="banner" indicator-dots="{{true}}" autoplay="{{true}}" interval="4000" circular="{{true}}" indicator-color="rgba(255,255,255,0.4)" indicator-active-color="#E8885A">
+    <swiper-item wx:for="{{bannerImages}}" wx:key="id">
+      <view class="banner-slide">
+        <image src="{{item.image}}" mode="aspectFill" class="banner-img" />
+        <view class="banner-overlay">
+          <text class="banner-text">{{item.text}}</text>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 分类筛选标签 -->
+  <scroll-view class="category-scroll" scroll-x="{{true}}" show-scrollbar="{{false}}">
+    <view class="category-list">
+      <view
+        class="category-item {{activeCategory === item.key ? 'active' : ''}}"
+        wx:for="{{categories}}"
+        wx:key="key"
+        data-key="{{item.key}}"
+        bindtap="onCategoryTap"
+      >
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 商品网格列表 -->
+  <view class="product-grid">
+    <view
+      class="product-card"
+      wx:for="{{filteredProducts}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+    >
+      <image src="{{item.image || '/images/logo/club-logo.png'}}" mode="aspectFill" class="product-image" />
+      <view class="product-info">
+        <text class="product-name">{{item.name}}</text>
+        <text class="product-price">¥{{item.price}}</text>
+        <text class="product-category-tag" wx:if="{{item.category}}">{{item.category}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{filteredProducts.length === 0 && !loading}}">
+    <text class="empty-text"><view class="icon icon-bag icon-sm" style="color:var(--text-hint);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>暂无商品</text>
+    <text class="empty-sub">该分类下还没有义卖商品，敬请期待</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

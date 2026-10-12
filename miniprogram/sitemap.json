@@ -1,0 +1,7 @@
+{
+  "rules": [{
+    "action": "allow",
+    "page": "*"
+  }],
+  "description": "公益社小猫小程序 - 记录校园猫咪的信息"
+}

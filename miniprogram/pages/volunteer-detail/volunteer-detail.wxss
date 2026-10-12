@@ -1,0 +1,127 @@
+page { background: #FFFBF0; }
+.container { padding: 0 24rpx 40rpx; min-height: 100vh; }
+
+/* 加载 */
+.loading { text-align: center; padding: 120rpx 0; }
+.loading-text { font-size: 28rpx; color: #bbb; }
+
+/* 主信息卡片 */
+.detail-card {
+  background: #fff; border-radius: 24rpx; padding: 32rpx;
+  margin-top: 20rpx; margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.detail-title {
+  font-size: 36rpx; font-weight: bold; color: #C67B4E;
+  display: block; margin-bottom: 20rpx; line-height: 1.4;
+}
+
+.detail-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FFF5ED;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx;
+  margin-bottom: 24rpx;
+}
+.detail-status.full { background: #F5F5F5; }
+.status-label {
+  font-size: 28rpx; font-weight: bold; color: #E8885A;
+}
+.detail-status.full .status-label { color: #bbb; }
+.status-quota {
+  font-size: 24rpx; color: #E8885A;
+}
+.detail-status.full .status-quota { color: #ccc; }
+
+/* 信息列表 */
+.info-list { }
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+.info-item:last-child { margin-bottom: 0; }
+.info-icon { font-size: 32rpx; margin-right: 14rpx; flex-shrink: 0; margin-top: 2rpx; }
+.info-content { flex: 1; }
+.info-label { font-size: 24rpx; color: #bbb; display: block; margin-bottom: 4rpx; }
+.info-value { font-size: 28rpx; color: #555; display: block; line-height: 1.4; }
+
+/* 详情页分享按钮 */
+.detail-share-btn {
+  width: 100%; height: 64rpx; line-height: 64rpx;
+  text-align: center; font-size: 26rpx; color: #E8885A;
+  background: #FFF5ED; border: none; border-radius: 12rpx;
+  padding: 0; margin-top: 24rpx;
+}
+.detail-share-btn::after { border: none; }
+
+/* 描述卡片 */
+.section-card {
+  background: #fff; border-radius: 24rpx; padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.section-title { font-size: 30rpx; font-weight: bold; color: #C67B4E; display: block; margin-bottom: 14rpx; }
+.section-text { font-size: 28rpx; color: #555; line-height: 1.8; display: block; }
+
+/* 报名区域 */
+.apply-section { margin-bottom: 20rpx; }
+
+.apply-card {
+  background: #fff; border-radius: 24rpx; padding: 28rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.apply-title { font-size: 30rpx; font-weight: bold; color: #C67B4E; display: block; margin-bottom: 6rpx; }
+.apply-sub { font-size: 24rpx; color: #bbb; display: block; margin-bottom: 24rpx; }
+
+.apply-input {
+  width: 100%; height: 80rpx; background: #FFF5ED;
+  border-radius: 16rpx; padding: 0 20rpx; font-size: 28rpx;
+  box-sizing: border-box; margin-bottom: 16rpx;
+  color: #333;
+}
+.apply-input::placeholder { color: #ccc; }
+
+.apply-btn {
+  width: 100%; height: 88rpx; line-height: 88rpx;
+  background: #E8885A; color: #fff; border-radius: 44rpx;
+  font-size: 30rpx; border: none; margin-top: 8rpx; padding: 0;
+}
+.apply-btn::after { border: none; }
+.apply-btn[disabled] { background: #ddd; color: #999; }
+
+/* 已报名卡片 */
+.applied-card {
+  background: #fff; border-radius: 24rpx; padding: 40rpx 28rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+.applied-icon { font-size: 80rpx; display: block; margin-bottom: 16rpx; }
+.applied-title { font-size: 34rpx; font-weight: bold; color: #4CAF50; display: block; margin-bottom: 8rpx; }
+.applied-sub { font-size: 26rpx; color: #999; display: block; margin-bottom: 20rpx; line-height: 1.5; }
+.applied-status-tag {
+  display: inline-block;
+  font-size: 24rpx; padding: 8rpx 28rpx; border-radius: 24rpx;
+  background: #FFF8E1; color: #F57F17;
+}
+.applied-status-tag.pending { background: #FFF8E1; color: #F57F17; }
+.applied-status-tag.confirmed { background: #E8F5E9; color: #388E3C; }
+.applied-status-tag.attended { background: #E3F2FD; color: #1565C0; }
+
+/* 无法报名 */
+.no-apply {
+  text-align: center;
+  padding: 60rpx 0;
+}
+.no-apply-text { font-size: 28rpx; color: #bbb; display: block; margin-bottom: 20rpx; }
+
+.login-btn {
+  display: inline-block;
+  padding: 16rpx 48rpx;
+  background: #E8885A; color: #fff;
+  border-radius: 40rpx; font-size: 28rpx;
+  border: none;
+}
+.login-btn::after { border: none; }

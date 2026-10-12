@@ -1,0 +1,107 @@
+<view class="container">
+  <view class="form-card">
+    <!-- 帖子分类（所有用户可见） -->
+    <view class="form-item">
+      <text class="form-label">帖子分类</text>
+      <picker mode="selector" range="{{categoryList}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+        <view class="picker-input">{{categoryList[categoryIndex]}}</view>
+      </picker>
+    </view>
+
+    <!-- 关联猫咪（仅猫猫帖时显示） -->
+    <view class="form-item" wx:if="{{category === '猫猫帖'}}">
+      <text class="form-label">关联猫咪</text>
+      <picker mode="selector" range="{{catNames}}" value="{{catIndex}}" bindchange="onCatChange">
+        <view class="picker-input">
+          {{catNames[catIndex] || '选择猫咪...'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 主题 -->
+    <view class="form-item">
+      <text class="form-label">主题</text>
+      <input class="text-input title-input" placeholder="给帖子起个标题..." value="{{title}}" bindinput="onTitleInput" maxlength="100" />
+      <text class="char-count">{{title.length}}/100</text>
+    </view>
+
+    <!-- 选择图片 -->
+    <view class="form-item">
+      <text class="form-label">上传照片（最多 9 张）</text>
+      <view class="image-picker-wrap">
+        <view class="image-picker" bindtap="chooseImage">
+          <view class="image-placeholder">
+            <text class="plus">+</text>
+            <text class="hint">{{imagePaths.length || 0}}/9</text>
+          </view>
+        </view>
+        <image wx:for="{{imagePaths}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="preview-image" />
+      </view>
+    </view>
+
+    <!-- 内容 -->
+    <view class="form-item">
+      <text class="form-label">内容</text>
+      <textarea class="text-input content-input" placeholder="分享你的故事、发现、心情..."
+                value="{{text}}" bindinput="onTextInput" maxlength="500" />
+      <text class="char-count">{{text.length}}/500</text>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="submitPost" disabled="{{!title && !text && imagePaths.length === 0}}">
+      {{isManager || isAdmin ? '发布' : '发布（需审核）'}}
+    </button>
+
+    <!-- 活动记录帖：收支字段 -->
+    <view class="finance-section" wx:if="{{category === '活动记录帖' && (isManager || isAdmin)}}">
+      <view class="finance-row">
+        <view class="finance-field">
+          <text class="finance-label"><view class="icon icon-income icon-sm" style="color:#2e7d32;margin-right:4rpx;display:inline-block;vertical-align:middle"></view>收入金额</text>
+          <input class="input finance-input" type="digit" placeholder="0.00" value="{{incomeAmount}}" bindinput="onIncomeInput" />
+        </view>
+        <view class="finance-field">
+          <text class="finance-label"><view class="icon icon-expense icon-sm" style="color:#d32f2f;margin-right:4rpx;display:inline-block;vertical-align:middle"></view>支出金额</text>
+          <input class="input finance-input" type="digit" placeholder="0.00" value="{{expenseAmount}}" bindinput="onExpenseInput" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 管理员选项（荣大大/开发者可见） -->
+    <view class="manager-options" wx:if="{{isManager}}">
+      <view class="option-item">
+        <view class="option-info">
+          <view class="option-label"><view class="icon icon-pin icon-sm" style="color:var(--text-tertiary);margin-right:6rpx;display:inline-block;vertical-align:middle"></view>置顶</view>
+          <text class="option-desc">帖子将置顶在动态列表上方</text>
+        </view>
+        <switch checked="{{isPinned}}" bindchange="onPinnedChange" color="#1A73E8" />
+      </view>
+      <!-- 置顶截止时间（置顶开启时显示） -->
+      <view class="option-item" wx:if="{{isPinned}}">
+        <view class="option-info">
+          <text class="option-label">⏰ 置顶截止时间</text>
+          <text class="option-desc">到期后自动取消置顶</text>
+        </view>
+        <view class="pin-time-row">
+          <picker mode="date" value="{{pinDate}}" bindchange="onPinDateChange">
+            <view class="input picker-display pin-picker">{{pinDate || '选择日期'}}</view>
+          </picker>
+          <picker mode="time" value="{{pinTime}}" bindchange="onPinTimeChange">
+            <view class="input picker-display pin-picker">{{pinTime || '时间'}}</view>
+          </picker>
+        </view>
+      </view>
+      <view class="option-item">
+        <view class="option-info">
+          <text class="option-label">⭐ 设置在动态顶部</text>
+          <text class="option-desc">帖子将显示在动态页面最顶部（高于置顶）</text>
+        </view>
+        <switch checked="{{isSpotlight}}" bindchange="onSpotlightChange" color="#E8885A" />
+      </view>
+    </view>
+
+    <!-- 提示 -->
+    <text class="notice" wx:if="{{!isManager && !isAdmin}}">发布的内容需要管理员审核通过后才会展示</text>
+    <text class="notice notice-manager" wx:elif="{{isManager}}">荣大大/开发者发布的内容自动通过审核</text>
+    <text class="notice notice-manager" wx:else>管理员发布的内容自动通过审核</text>
+  </view>
+</view>
